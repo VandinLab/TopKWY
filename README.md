@@ -17,7 +17,7 @@ The package contains three folders:
 3. /scripts/ : contains the scripts which replicates our experiments.
 
 
-1. REPRODUCIBILITY OF THE EXPERIMENTS DESCRIBED IN THE ARTICLE
+## REPRODUCIBILITY OF THE EXPERIMENTS DESCRIBED IN THE ARTICLE
 
 To reproduce the experiments described in "Efficient Mining of the most Significant Patterns", follows these steps:
 1. TopKWY compilation: use the `make` command from inside the /src/ folder.
