@@ -89,8 +89,8 @@ One transaction should not contains duplicate items.
 
 #### DATASETS CONVERSIONS
 
-The script *convert_labeled_datasets.py8 converts an unlabelled datasets into a labeled one, by removing the item with frequency closest to 0.5 and using it as target. It also print the correct .spec file to be used with TopKWY.
-The script *compute_spec_file.py8 computes the .spec file of any already labelled dataset *dat_name8 by using the command `python compute_spec_file.py dat_name`
+The script *convert_labeled_datasets.py* converts an unlabelled datasets into a labeled one, by removing the item with frequency closest to 0.5 and using it as target. It also print the correct .spec file to be used with TopKWY.
+The script *compute_spec_file.py* computes the .spec file of any already labelled dataset *dat_name* by using the command `python compute_spec_file.py dat_name`
 
 
 ### Output File
