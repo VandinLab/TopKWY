@@ -39,4 +39,4 @@ In these files the format is:
 k; jp; alpha; dataset_name; running_time; peak_memory; number_of_tested_patterns; run_id;
 ```
 
-More details about TopKWY are provided in */src/README.txt*.
+More details about TopKWY are provided in */src/README.md*.
