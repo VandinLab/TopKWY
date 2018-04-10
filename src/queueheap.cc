@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin
- * This file is part of SignificantMiner and it is based on TopKMiner
+ * This file is part of TopKWY and it is based on TopKMiner
  * Copyright (C) 2008 Andrea Pietracaprina, Fabio Vandin
  * Copyright (C) 2008 Advanced Computing Group, University of Padova, Italy
  *
- * SignificantMiner is free software; you can redistribute it and/or
+ * TopKWY is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -147,9 +147,9 @@ void Itemset::print(){
 	tipoInt no;
 	cout << "\n------------ Itemset infos: BEGIN ----------------\n" << endl;
 	cout << "support: " << support << endl;
-	/* SignificantMiner */
+	/* TopKWY */
 	cout << "target class support (a_S): " << info->a_S[0] << endl;
-	/* SignificantMiner */
+	/* TopKWY */
 	cout << "minItem: " << info->minItem << endl;
 	cout << "coreIndex: " << info->coreIndex << endl;
 	cout << "typelist: " << info->typeList << endl;
@@ -453,7 +453,7 @@ long long Queue::spaceUsedByLists(){
 
 
 
-// Min-Max queue implementation for SignificantMiner
+// Min-Max queue implementation for TopKWY
 
 
 ///default constructor of QueueMinMax: it allocate the memory for the heap and initialize the descriptor variables
@@ -779,10 +779,10 @@ tipoInt QueueMinMax::getMax(){
 
 
 
-// QueueMinMax for Results for SignificantMiner
+// QueueMinMax for Results for TopKWY
 
 
-// Min-Max queue implementation for SignificantMiner
+// Min-Max queue implementation for TopKWY
 
 
 ///default constructor of QueueMinMax: it allocate the memory for the heap and initialize the descriptor variables

@@ -236,7 +236,7 @@ void initClassLabels(){
 		cout << "Error: can't allocate labels matrix." << endl;
 		abort();
 	}
-	cout << "labels matrix allocated " << endl;
+	//cout << "labels matrix allocated " << endl;
 	N=0;
 	while(!c_labels.eof()){
 		getline (c_labels,line); // read the class label
@@ -327,7 +327,7 @@ void initClassLabels(){
 	precomputetime = 0.0;
 	max_cached_pvalues = floor(cache_max_memory / ((double)n1 * 4));
 
-	cout << "max_cached_pvalues " << max_cached_pvalues << endl;
+	//cout << "max_cached_pvalues " << max_cached_pvalues << endl;
 
 	cout << "WY functions initialized correctly " << endl;
 
@@ -1249,8 +1249,8 @@ void printMinPvalues(){
 void printTimes(){
 	//out_file_stat << "Time for p-values = " << p_values_time << endl;
 	cout << "Time for p-values precomputation = " << precomputetime << endl;
-	cout << "Cache accesses = " << cache_accesses << endl;
-	cout << "New precomputation count = " << new_precomputation << endl;
+	cout << "p-values cache accesses = " << cache_accesses << endl;
+	cout << "p-values new precomputations = " << new_precomputation << endl;
 }
 
 void benchmarklogoperations(){

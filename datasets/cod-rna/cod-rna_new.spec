@@ -3,5 +3,3 @@ cod-rna.dat
 8
 271618
 cod-rna.labels
-0.05
-1000

@@ -8,8 +8,6 @@ import time
 # convert these unlabeled dataets to labeled
 datasets = ['accidents','connect', 'retail', 'bms-pos', 'bms-web1', 'bms-web2','chess','T10I4D100K','T40I10D100K'];
 
-alpha = 0.05
-jp = 10000
 k = 10
 
 
@@ -50,8 +48,6 @@ for dat_name in datasets[:]:
 	f_out_spec.write(str(maxtranslength+1) + "\n")
 	f_out_spec.write(str(numtrans+1) + "\n")
 	f_out_spec.write(dat_name + "_new.labels" + "\n")
-	f_out_spec.write(str(alpha) + "\n")
-	f_out_spec.write(str(jp) + "\n")
 	f_out_spec.close()
 	print "spec file done "+newspecfilename
 

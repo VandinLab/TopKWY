@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin
- * This file is part of SignificantMiner and it is based on TopKMiner
+ * This file is part of TopKWY and it is based on TopKMiner
  * Copyright (C) 2008 Andrea Pietracaprina, Fabio Vandin
  * Copyright (C) 2008 Advanced Computing Group, University of Padova, Italy
  *
- * SignificantMiner is free software; you can redistribute it and/or
+ * TopKWY is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -238,10 +238,10 @@ class ItemList{
 	public:
 		tipoInt item;	///< id of the item
 		tipoInt count;	///< count of the item
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt a_S;	///< a_S of the item
 		tipoInt *a_S_permutations; // permuted as of the item
-		/* SignificantMiner */
+		/* TopKWY */
 };
 
 /// temporary ItemList used for quicksort
@@ -277,12 +277,12 @@ class PatriciaNode{
 		tipoInt count;		///< count of the node
 		tipoInt* lastItem;	///< last item memorized in the node
 
-		/* SignificantMiner */
+		/* TopKWY */
 		union {
 			uint8_t* a_S;	///< a_S of the node (compressed into 1 byte)
 			tipoInt* a_S_; 	///< a_S of the node if count > 127
 		};
-		/* SignificantMiner */
+		/* TopKWY */
 
 		/**an union is used because the two following field are used in a MUTUALLY EXCLUSIVE manner (one in the building, the other one in the computation)
 		*/
@@ -349,9 +349,9 @@ class PatriciaTrie{
 		 * in the computation: id of the j-th item sorted by decreasing count
 		 */
 		tipoInt* count_element;
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt* count_a_S_element;
-		/* SignificantMiner */
+		/* TopKWY */
 
 		/**list for the frequent item (and their id)
 		 */
@@ -415,7 +415,7 @@ PatriciaNode* createNode(Transaction t, bool toSum){
 	memset(pnode,0,sizeNode+t[0]*sizeof(tipoInt));
 	//pnode->count=1;
 	pnode->count=1;
-	/* SignificantMiner */
+	/* TopKWY */
 	pnode->a_S=(uint8_t *)malloc((jp + 1) * sizeof(uint8_t));
 	if(!pnode->a_S){
 		cout << "problems in createnode with as! " << endl;
@@ -424,7 +424,7 @@ PatriciaNode* createNode(Transaction t, bool toSum){
 	/*for (int j=0;j<jp+1;j++){
 		pnode->a_S[j]=0;
 	}*/
-	/* SignificantMiner */
+	/* TopKWY */
 	pnode->lastItem=&((&pnode->item)[t[0]-1]);
 	pnode->hash=NULL;
 	pnode->numChildren=0;
@@ -625,7 +625,7 @@ PatriciaNode* split_node(PatriciaNode* node, tipoInt ind1){
 		node->hash->bucket=tmpPnt;			///the node has only one child
 		tmpPnt->count=node->count;			///set the count of the new node
 
-		/* SignificantMiner */
+		/* TopKWY */
 		if(node->count >= 128){
 			for(int j=0; j < jp+1; j++){
 				tmpPnt->a_S_[j]=node->a_S_[j];		///set the a_S of the new node
@@ -636,7 +636,7 @@ PatriciaNode* split_node(PatriciaNode* node, tipoInt ind1){
 				tmpPnt->a_S[j]=node->a_S[j];		///set the a_S of the new node
 			}
 		}
-		/* SignificantMiner */
+		/* TopKWY */
 
 		tmpPnt->isEmpty=node->isEmpty;			///if the old node was empty, so is the new one
 		if (tmpPnt->isEmpty==0){
@@ -660,9 +660,9 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 	#ifdef debug_patricia_creation
 	cout << "split 2 node call "  << endl;
 	#endif
-	/* SignificantMiner */
+	/* TopKWY */
 	/*long long offset = ((long long)t_index) * (jp_long+1);*/
-	/* SignificantMiner */
+	/* TopKWY */
 	//if(DEEP_DEBUG)
 	//cout << "split 2 node call "  << endl;
 	int i;
@@ -703,7 +703,7 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 	PatriciaNode* tmpPnt=createNode(temp,false);	///pointer to the new node
 	node->hash->bucket=tmpPnt;			///the node has only one child at the moment
 	tmpPnt->count=node->count;
-	/* SignificantMiner */
+	/* TopKWY */
 	if(node->count >= 128){
 		convertNodeAs(tmpPnt , false);
 		for(int j=0; j < jp+1; j++){
@@ -715,7 +715,7 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 			tmpPnt->a_S[j]=node->a_S[j];		///set the a_S of the new node
 		}
 	}
-	/* SignificantMiner */
+	/* TopKWY */
 	///if the node splitted was empty, so it is its children
 	if (node->isEmpty>0){
 		tmpPnt->isEmpty=1;
@@ -731,7 +731,7 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 	if ((tmpPnt->item)>tran[1]) {
 		tp=tmpPnt;
 		tmpPnt=createNode(tran,true);
-		/* SignificantMiner */
+		/* TopKWY */
 		for(int j=0; j < jp+1; j++){
 			//index = offset + j;
 			/*if(permutations[index])
@@ -739,13 +739,13 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 			//tmpPnt->a_S[j] = permutations[index];
 			tmpPnt->a_S[j] = permuted_transaction[j];
 		}
-		/* SignificantMiner */
+		/* TopKWY */
 		tmpPnt->next=tp;
 		node->hash->bucket=tmpPnt;
 	}
 	else{
 		tp=createNode(tran,true);
-		/* SignificantMiner */
+		/* TopKWY */
 		for(int j=0; j < jp+1; j++){
 			//index = offset + j;
 			/*if(permutations[index])
@@ -753,7 +753,7 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 			//tp->a_S[j] = permutations[index];
 			tp->a_S[j] = permuted_transaction[j];
 		}
-		/* SignificantMiner */
+		/* TopKWY */
 		tmpPnt->next=tp;
 	}
 	#ifdef debug_patricia_creation
@@ -764,26 +764,38 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 
 int readSpecFile(int argc, char *argv[]){
 	string line;
-	if (argc<4){
-		cout<< "\nUsage: ./topkminer file.spec k_current k_global [jp]\n" << endl;
+	if (argc<5){
+		cout<< "\nNot enough parameters.\n" << endl;
+		cout<< "\nUsage: ./topkwy file.spec k jp alpha [max_ram]\n" << endl;
 		return 0;
 	}
 	ifstream specfile (argv[1]);
 	k=10000000;
-	k_max=10000000;
-	max_ram=atoi(argv[2]);
-	K_significant_patterns=atoi(argv[3]);
+	k_max=k;
+	K_significant_patterns=atoi(argv[2]);
 	jp=0;
 	alpha=0.0;
-	if(argc>=5)
-		jp=atoi(argv[4]);
+	jp=atoi(argv[3]);
+	alpha=atof(argv[4]);
+	max_ram = 100000;
 	if(argc>=6){
-		alpha=atof(argv[5]);
-		//cout << "alpha = " << alpha << endl;
+		max_ram=atoi(argv[5]);
+		if ( max_ram < 0 ){
+			cout << "Invalid value for max ram\n" << endl;
+			return 0;
+		}
 	}
-	if ( k_max < k ){
-		cout << "k_global IS GREATER THAN k_current!\nSETTING k_current EQUAL TO k_global\n" << endl;
-		k = k_max;
+	if ( k < -1 ){
+		cout << "Invalid value for k\n" << endl;
+		return 0;
+	}
+	if ( jp < 1 ){
+		cout << "Invalid value for jp\n" << endl;
+		return 0;
+	}
+	if ( alpha < 0.0 ){
+		cout << "Invalid value for alpha\n" << endl;
+		return 0;
 	}
 	if (!specfile.is_open()){
 		cout << "Unable to open specification file\n";
@@ -813,7 +825,7 @@ int readSpecFile(int argc, char *argv[]){
 			///number of transactions in the dataset
 			num_tr=atoi(line.c_str());
 		}
-		/* SignificantMiner */
+		/* TopKWY */
 		if(i==5){ // class label file
 			c_fileinput=line;
 			dataset.close();
@@ -825,23 +837,17 @@ int readSpecFile(int argc, char *argv[]){
 			dataset.close();
 			dataset.open(fileinput.c_str(),ifstream::in); ///<reopen dataset file;
 		}
-		if(i==6){ // target FWER
-			if(alpha < 0.000001)
-			alpha=atof(line.c_str());
-		}
-		if(i==7){ // number of permutations
-			if(jp==0)
-			jp=atoi(line.c_str());
-		}
-		/* SignificantMiner */
+		/* TopKWY */
 	}
-	if(i!=7){
+	if(i<5){
 		cout << "\nThere is some problem in the specification file!\n" << endl;
 		return 0;
 	}
 	specfile.close();
 
-	cout << "dataset = " << fileinput << endl;
+	cout << "dataset transactions = " << fileinput << endl;
+	cout << "dataset labels = " << c_fileinput << endl;
+	cout << "k = " << K_significant_patterns << endl;
 	cout << "alpha = " << alpha << endl;
 	cout << "jp = " << jp << endl;
 	return 1;
@@ -859,7 +865,7 @@ void firstScan_new(PatriciaTrie* p){
 	const char *space = " "; ///delimiter
 	char* charline; /// to memorize tokens
 
-	/* SignificantMiner */
+	/* TopKWY */
 	/*long long jp_long = (long long)jp;
 	long long count_a_s_size = ((long long)maxID+1)*(jp_long+1);
 	count_a_S_element_space = sizeof(tipoInt) * ((double)count_a_s_size / 1000000.0);
@@ -869,7 +875,7 @@ void firstScan_new(PatriciaTrie* p){
 	}
 	long long index = 0;*/
 	p->count_a_S_element=(tipoInt*)calloc(maxID+1,sizeof(tipoInt));
-	/* SignificantMiner */
+	/* TopKWY */
 
 	///initialize the count_element array
 	p->count_element=(tipoInt*)calloc(maxID+1,sizeof(tipoInt));
@@ -912,7 +918,7 @@ void firstScan_new(PatriciaTrie* p){
 
 				int element = atoi(tmp);
 				p->count_element[element]++;
-				/* SignificantMiner */
+				/* TopKWY */
 				/*long long offset1 = ((long long)element) * (jp_long+1);
 				long long offset2 = i * (jp_long + 1);
 				for(long long j = 0; j < jp_long+1; j++){
@@ -920,7 +926,7 @@ void firstScan_new(PatriciaTrie* p){
 					p->count_a_S_element[offset1 + j]+=permutations[index];
 				}*/
 				p->count_a_S_element[element]+=labels[i];
-				/* SignificantMiner */
+				/* TopKWY */
 
 				tmp=strtok(NULL,space);
 				trans_length++;
@@ -962,10 +968,10 @@ void firstScan(PatriciaTrie* p , bool* permutations){
 	const char *space = " "; ///delimiter
 	char* charline; /// to memorize tokens
 
-	/* SignificantMiner */
+	/* TopKWY */
 	p->count_a_S_element=(tipoInt*)calloc((maxID+1)*(jp+1),sizeof(tipoInt));
 	tipoInt index = 0;
-	/* SignificantMiner */
+	/* TopKWY */
 
 	///initialize the count_element array
 	p->count_element=(tipoInt*)calloc(maxID+1,sizeof(tipoInt));
@@ -993,7 +999,7 @@ void firstScan(PatriciaTrie* p , bool* permutations){
 				///increment the count of the item with ID tmp
 				p->count_element[atoi(tmp)]++;
 				cout << "p->count_element[atoi(tmp)] = " << p->count_element[atoi(tmp)] << endl;
-				/* SignificantMiner */
+				/* TopKWY */
 				int offset = atoi(tmp) * (jp+1);
 				for(int j = 0; j < jp+1; j++){
 					index = i * (jp + 1) + j;
@@ -1001,7 +1007,7 @@ void firstScan(PatriciaTrie* p , bool* permutations){
 						p->count_a_S_element[offset + j]++;
 					}
 				}
-				/* SignificantMiner */
+				/* TopKWY */
 				tmp=strtok(NULL,space);
 			}
 
@@ -1083,13 +1089,13 @@ class NodePointer{
 	public:
 		tipoInt node; 	///ID of the node associated to the pointer
 		tipoInt count;		///counter associated with the node
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt count_a_S;		///counter of a_S associated with the node
 		//~NodePointer();
 		tipoInt nl_list_index;
 		// if you add something here, remind to increase size sizePnt, which is not dynamic
 		// otherwise you will meet blasfemy and pain
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt minIDNodePnt;	///index of the node with minimum ID in the subtree rooted in the node: the index is referred to the startList associated
 		tipoInt maxIDNodePnt;	///index of the node with maximum ID in the subtree rooted in the node: the index is referred to the startList associated
 		tipoInt nextNodePointer; 	/// index in manualmem of next poiter of the current list: it is =-1 if next doesn't exist
@@ -1109,9 +1115,9 @@ typedef NodePointer* NodePointerList;
 class HeaderTable{
 	public:
 		tipoInt count;			///count of the extension
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt a_S;			///a_s of the extension
-		/* SignificantMiner*/
+		/* TopKWY*/
 		Transaction intersection;	///intersection on the prefix
 		VisitedNodeList visitedList;		///list of the nodes of the PatriciaTrie that contains the item
 		tipoInt pointerList;	///list of pointer to the nodes touched but not visited: we identify a node with is offset in manualmem

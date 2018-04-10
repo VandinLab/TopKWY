@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin
- * This file is part of SignificantMiner and it is based on TopKMiner
+ * This file is part of TopKWY and it is based on TopKMiner
  * Copyright (C) 2008 Andrea Pietracaprina, Fabio Vandin
  * Copyright (C) 2008 Advanced Computing Group, University of Padova, Italy
  *
- * SignificantMiner is free software; you can redistribute it and/or
+ * TopKWY is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -345,7 +345,7 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
 
 		    if(numNPI[i]+1 > max_nl_size_){
 		        max_nl_size_ = numNPI[i]+1;
-		        cout << " new max_nl_size_ = " << max_nl_size_ << endl;
+		        //cout << " new max_nl_size_ = " << max_nl_size_ << endl;
 		    }
 		    //if(tmpInfo->nl_nodes.size() < 0){
 		    if(numNPI[i]+1 < 0){
@@ -393,7 +393,7 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
 
 		    }*/
 
-			/* SignificantMiner */
+			/* TopKWY */
 			//temp_time = get_cpu_time();
 			#ifdef trace_state
 			program_state = -14;
@@ -544,15 +544,15 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
 			//tmpInfo->a_S[aj]=IL[i].a_S[aj];
 			//time_keeper += get_cpu_time() - temp_time;
 			//cout << "not set a_S for " << tmpIts->support << endl;
-			/* SignificantMiner */
+			/* TopKWY */
 			tmpIts->info=tmpInfo;
 
-			/* SignificantMiner */
+			/* TopKWY */
 			/*if(DEEP_DEBUG){
 				cout << "support of item set to " << tmpIts->support << endl;
 				cout << "a_S for item set to " << tmpIts->info->a_S << endl;
 			}*/
-			/* SignificantMiner */
+			/* TopKWY */
 
 			///create the Itemset for the min Queue: its ItsInfo is the same of the maxQueue
 			//minIts=(Itemset*)calloc(1,sizeof(Itemset));
@@ -676,7 +676,7 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
 	#endif
 	/*cout << "-142" << endl;*/
 
-			/* SignificantMiner */
+			/* TopKWY */
 			// check if infrequent itemsets can be removed from queue
 			if(DEEP_DEBUG)
 			cout << "checking to remove infrequent itemsets..." << endl;
@@ -715,7 +715,7 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
 				//free(todel);
 			//}
 			//time_keeper += get_cpu_time() - temp_time;
-			/* SignificantMiner */
+			/* TopKWY */
 
 			//cout << "here ok 3" << endl;
 
@@ -783,13 +783,13 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 			if (index<father->info->minItem){
 				///update count
 				HT[index].count+=patNode->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				/*for(int aj=0; aj<jp+1; aj++)
 				HT[index].a_S[aj]+=patNode->a_S[aj];*/
 				//time_keeper += get_cpu_time() - temp_time;
 				//cout << "increased a_S (1) for patricia node of " << patNode->a_S << " to " << HT[index].a_S << endl;
-				/* SignificantMiner */
+				/* TopKWY */
 
 				///we update intersection and visitedList only of item<coreindex
 				if (index<father->info->coreIndex){
@@ -877,14 +877,14 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 						cout << todelete->at(upper->pntToNode->a_S_index)[aj] << " ";
 					cout << endl;*/
 				//time_keeper += get_cpu_time() - temp_time;
-				/* SignificantMiner */
+				/* TopKWY */
 				/*if(upper->pntToNode->a_S!=addressOf[upper->pntToNode->node]->a_S){
 					if(addressOf[upper->pntToNode->node]->perm_a_S)
 					cout << "todelete->at(upper->pntToNode->a_S_index) = " << todelete->at(upper->pntToNode->a_S_index) << " , addressOf[upper->pntToNode->node]->a_S = " << addressOf[upper->pntToNode->node]->a_S << endl;
 					return;
 				}
 				upper->pntToNode->a_S=patNode->a_S;*/
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				///we copy transTmp into the new intersection
@@ -900,7 +900,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 			else{
 				///we must update the field of the pointer to upper
 				upper->pntToNode->count+=patNode->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (2) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
 				/*for(int aj=0; aj<jp+1; aj++)
@@ -909,7 +909,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 				/*upper->pntToNode->a_S+=patNode->a_S;
 				if(DEEP_DEBUG)
 				cout << "increased a_S (2) for patricia node of " << patNode->a_S << " to " << todelete->at(upper->pntToNode->a_S_index) << endl;*/
-				/* SignificantMiner */
+				/* TopKWY */
 				///as intersection we can use transTmp
 				i=1;	///pointer to elements of upper->pntToNode->intersection
 				j=1;	///pointer to element of transTmp
@@ -969,7 +969,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 
 				///we know that all the items in the node are all lower than father->info->minItem
 				HT[index].count+=currentpnt->count;	///update the count with the count of the pointer
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (3) to index currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
 				/*for(int aj=0; aj<jp+1; aj++)
@@ -978,7 +978,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 				//HT[index].a_S+=currentpnt->a_S;
 				//if(DEEP_DEBUG)
 				//cout << "increased a_S (3) for patricia node of " << currentpnt->a_S << " to " << HT[index].a_S << endl;
-				/* SignificantMiner */
+				/* TopKWY */
 
 				///we update intersection and visitedList only of item<coreindex
 
@@ -1047,7 +1047,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 				living_nodepointers++;
 				nextfree=nextfree+transTmp[0]+sizePnt;	///update nextfree
 				upper->pntToNode->count=currentpnt->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 
 				//upper->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -1063,7 +1063,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 						cout << todelete->at(upper->pntToNode->a_S_index)[aj] << " ";
 					cout << endl;*/
 				//time_keeper += get_cpu_time() - temp_time;
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				///we copy transTmp into the new intersection
@@ -1080,7 +1080,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 				else{
 					///we must update the field of the pointer to upper
 					upper->pntToNode->count+=currentpnt->count;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//cout << "access (5) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
 					//cout << "access (5) to index currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
@@ -1089,7 +1089,7 @@ void fillHT(StartNodeList startList, Itemset* father, typeQueue q){
 					//time_keeper += get_cpu_time() - temp_time;
 					/*if(DEEP_DEBUG)
 					cout << "increased a_S (4) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;*/
-					/* SignificantMiner */
+					/* TopKWY */
 					///as intersection we can use transTmp
 					i=1;	///pointer to elements of upper->pntToNode->intersection
 					j=1;	///pointer to element of transTmp
@@ -1128,14 +1128,14 @@ void clearHT(tipoInt id){
 	for (tipoInt i=0; i<=id; i++){
 		HT[i].count=0;			///count of the extension
 		HT[i].a_S=0;			///a_S of the extension
-		/* SignificantMiner */
+		/* TopKWY */
 		//temp_time = get_cpu_time();
 		//free(HT[i].a_S);
 		//HT[i].a_S = (tipoInt*)malloc((jp+1) * sizeof(tipoInt));
 		//for(int aj=0; aj<jp+1; aj++)
 		//HT[i].a_S[aj]=0;			///a_S of the extension
 		//time_keeper += get_cpu_time() - temp_time;
-		/* SignificantMiner */
+		/* TopKWY */
 		HT[i].intersection=NULL;	///intersection on the prefix
 		HT[i].visitedList[0].IDnode=0;		///number of vidited elements
 		HT[i].pointerList=-1;		///empty list
@@ -1188,7 +1188,7 @@ Transaction findPpce(Itemset* father, typeQueue q, StartNodeList startListFather
 						living_infos++; if(living_infos > maxlivinginfos) maxlivinginfos = living_infos;
 						ppce->info->minItem=father->info->minItem;
 						ppce->info->coreIndex=i;
-						/* SignificantMiner */
+						/* TopKWY */
 						//temp_time = get_cpu_time();
 						//ppce->info->a_S=(tipoInt*)malloc((jp+1) * sizeof(tipoInt));
 
@@ -1207,7 +1207,7 @@ Transaction findPpce(Itemset* father, typeQueue q, StartNodeList startListFather
 
 
 						//time_keeper += get_cpu_time() - temp_time;
-						/* SignificantMiner */
+						/* TopKWY */
 
 						///now we must find the NodeIDList for the ppc-e
 
@@ -1292,14 +1292,14 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 			if (index<father->info->minItem){
 				///update count
 				HT[index].count+=patNode->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				/*for(int aj=0; aj<jp+1; aj++)
 				HT[index].a_S[aj]+=patNode->a_S[aj];*/
 				//time_keeper += get_cpu_time() - temp_time;
 				//if(DEEP_DEBUG)
 				//cout << "increased a_S (5) for patricia node of " << patNode->a_S << " to " << HT[index].a_S << endl;
-				/* SignificantMiner */
+				/* TopKWY */
 			}
 		}
 
@@ -1317,7 +1317,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 				living_nodepointers++;
 				nextfree=nextfree+sizePnt;	///update nextfree
 				upper->pntToNode->count=patNode->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 
 				//upper->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -1333,7 +1333,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 						cout << todelete->at(upper->pntToNode->a_S_index)[aj] << " ";
 					cout << endl;*/
 				//time_keeper += get_cpu_time() - temp_time;
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				(&upper->pntToNode->intersection)[0]=0;
@@ -1344,7 +1344,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 			}
 			else{	///we must update the field of the pointer to upper
 				upper->pntToNode->count+=patNode->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (7) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
 				/*for(int aj=0; aj<jp+1; aj++)
@@ -1352,7 +1352,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 				//time_keeper += get_cpu_time() - temp_time;
 				/*if(DEEP_DEBUG)
 				cout << "increased a_S (6) for patricia node of " << patNode->a_S << " to " << todelete->at(upper->pntToNode->a_S_index) << endl;*/
-				/* SignificantMiner */
+				/* TopKWY */
 			}
 		}
 	}
@@ -1376,7 +1376,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 				index=(&patNode->item)[s];
 				///we know that all the items in the node are all lower than father->info->minItem
 				HT[index].count+=currentpnt->count;	///update the count with the count of the pointer
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (8) to index currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
 				/*for(int aj=0; aj<jp+1; aj++)
@@ -1384,7 +1384,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 				//time_keeper += get_cpu_time() - temp_time;
 				/*if(DEEP_DEBUG)
 				cout << "increased a_S (7) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << HT[index].a_S << endl;
-				*//* SignificantMiner */
+				*//* TopKWY */
 			}
 
 			///now we must create the NodePointer to the father of the patNode and insert it in the pointerList of its greater item
@@ -1401,7 +1401,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 					living_nodepointers++;
 					nextfree=nextfree+sizePnt;	///update nextfree
 					upper->pntToNode->count=currentpnt->count;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 
 					//upper->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -1417,7 +1417,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 						cout << todelete->at(upper->pntToNode->a_S_index)[aj] << " ";
 					cout << endl;*/
 					//time_keeper += get_cpu_time() - temp_time;
-					/* SignificantMiner */
+					/* TopKWY */
 					upper->pntToNode->node=upper->ID;
 					upper->pntToNode->nextNodePointer=-1;
 					///insert the node in the pointerList of its greater item
@@ -1427,7 +1427,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 				}
 				else{	///we must update the field of the pointer to upper
 					upper->pntToNode->count+=currentpnt->count;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//cout << "access (10) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
 					//cout << "access (10) to index currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
@@ -1436,7 +1436,7 @@ Transaction findClo(StartNodeList startList, Itemset* father){
 					//time_keeper += get_cpu_time() - temp_time;
 					/*if(DEEP_DEBUG)
 					cout << "increased a_S (8) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;*/
-					/* SignificantMiner */
+					/* TopKWY */
 				}
 			}
 			off=currentpnt->nextNodePointer;
@@ -1556,7 +1556,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 
 				///update count
 				HT[index].count+=nodeList[offIDList+1];
-				/* SignificantMiner */
+				/* TopKWY */
 				HT[index].a_S+=nodeList[offIDList+2];
 				/* TODO */
 
@@ -1601,7 +1601,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					cout << "nodelist: increased count (1) for patricia node of " << nodeList[offIDList+1] << " to " << HT[index].count << endl;
 					cout << "nodelist: updated a_S of " << nodeList[offIDList+2] << " to " << HT[index].a_S << endl;
 				}
-				/* SignificantMiner */
+				/* TopKWY */
 
 				///update the intersection in HT
 				if (HT[index].intersection!=NULL){
@@ -1683,7 +1683,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					nextfree=nextfree+numItemUpper+transTmp[0]+sizePnt;	///update nextfree
 					upper->pntToNode->count=nodeList[offIDList+1];
 					upper->pntToNode->count_a_S=nodeList[offIDList+2];
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 
 					//upper->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -1754,7 +1754,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 						cout << "updated count (2) to " << nodeList[offIDList+1] << endl;
 						cout << "a_S updated to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;
 					}*/
-					/* SignificantMiner */
+					/* TopKWY */
 					upper->pntToNode->node=upper->ID;
 					upper->pntToNode->nextNodePointer=-1;
 					///we copy transTmp into the new intersection
@@ -1771,7 +1771,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					///we must update the field of the pointer to upper
 					upper->pntToNode->count+=nodeList[offIDList+1];
 					upper->pntToNode->count_a_S+=nodeList[offIDList+2];
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 
           int temp_as_value = (addressOf[nodeList[offIDList]]->count >= 128) ? addressOf[nodeList[offIDList]]->a_S_[0] : addressOf[nodeList[offIDList]]->a_S[0];
@@ -1832,7 +1832,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 						cout << "nodelist: updated count of " << nodeList[offIDList+1] << " to " << upper->pntToNode->count << endl;
 						cout << "nodelist: updated a_S of " << nodeList[offIDList+2] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;
 					}*/
-					/* SignificantMiner */
+					/* TopKWY */
 					///as intersection we can use transTmp
 					i=1;	///pointer to elements of upper->pntToNode->intersection
 					j=1;	///pointer to element of transTmp
@@ -1860,9 +1860,9 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 				}
 			}
 			///update the offIDList
-			/* SignificantMiner */
+			/* TopKWY */
 			tipoInt nf = 4; // number of nodelist fields: 3 + 1 (added a_S)
-			/* SignificantMiner */
+			/* TopKWY */
 			offIDList=offIDList+nf; ///we now that the length of the intersection is 0 (as number of tipoInt that memorize the items in the intersection associated to the pointer)
 		}
 
@@ -1881,7 +1881,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 			nextfree=nextfree+numItems+numInter+sizePnt;	///not "...+1;" because coreIndex will not stay in the intersection
 			patNode->pntToNode->count=nodeList[offIDList+1];
 			patNode->pntToNode->count_a_S=nodeList[offIDList+2];
-			/* SignificantMiner */
+			/* TopKWY */
 			//temp_time = get_cpu_time();
 
 			//patNode->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -1951,7 +1951,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 				//cout << "a_S was " << todelete->at(patNode->pntToNode->a_S_index) << endl;
 				cout << "updated a_S to " << todelete->at(patNode->pntToNode->a_S_index) << endl;
 			}*/
-			/* SignificantMiner */
+			/* TopKWY */
 			patNode->pntToNode->node=patNode->ID;
 			patNode->pntToNode->nextNodePointer=-1;
 
@@ -2008,7 +2008,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 				cout << "nodeList[offIDList+1]="<<nodeList[offIDList+1]<<endl;
 				cout << "nodeList[offIDList+2]="<<nodeList[offIDList+2]<<endl;*/
 
-				/* SignificantMiner */
+				/* TopKWY */
 
         int temp_as_value = (addressOf[nodeList[offIDList]]->count >= 128) ? addressOf[nodeList[offIDList]]->a_S_[0] : addressOf[nodeList[offIDList]]->a_S[0];
 
@@ -2050,7 +2050,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					cout << "nodelist: increased count (2) for patricia node of " << nodeList[offIDList+1] << " to " << HT[index].count << endl;
 					cout << "nodelist: increased a_S (2) for patricia node of " << nodeList[offIDList+2] << " to " << HT[index].a_S << endl;
 				}
-				/* SignificantMiner */
+				/* TopKWY */
 
 				///update the intersection in HT
 				if (HT[index].intersection!=NULL){
@@ -2131,7 +2131,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					nextfree=nextfree+numItemUpper+(&patNode->pntToNode->intersection)[0]+sizePnt;	///update nextfree
 					upper->pntToNode->count=patNode->pntToNode->count;
 					upper->pntToNode->count_a_S=patNode->pntToNode->count_a_S;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//upper->pntToNode->a_S_index = getNewTodeleteIndex();
 					upper->pntToNode->nl_list_index = getNewListIndex();
@@ -2158,7 +2158,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 						cout << "count set to " << patNode->pntToNode->count << endl;
 						cout << "a_S set to " << todelete->at(patNode->pntToNode->a_S_index)[0] << endl;
 					}*/
-					/* SignificantMiner */
+					/* TopKWY */
 					upper->pntToNode->node=upper->ID;
 					upper->pntToNode->nextNodePointer=-1;
 					///we copy transTmp into the new intersection
@@ -2175,7 +2175,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					///we must update the field of the pointer to upper
 					upper->pntToNode->count+=patNode->pntToNode->count;
 					upper->pntToNode->count_a_S+=patNode->pntToNode->count_a_S;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//cout << "access (18) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
 					//cout << "access (18) to index upper->pntToNode->a_S_index = " << patNode->pntToNode->a_S_index << endl;
@@ -2191,7 +2191,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					//time_keeper += get_cpu_time() - temp_time;
 					//if(DEEP_DEBUG)
 					//cout << "increased a_S (9) for patricia node of " << todelete->at(patNode->pntToNode->a_S_index)[0] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;
-					/* SignificantMiner */
+					/* TopKWY */
 					///as intersection we can use transTmp
 					i=1;	///pointer to elements of upper->pntToNode->intersection
 					j=1;	///pointer to element of transTmp
@@ -2222,9 +2222,9 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 			///delete the reference to the pointer into patNode
 			patNode->pntToNode=NULL;
 
-			/* SignificantMiner */
+			/* TopKWY */
 			tipoInt nf = 4; // number of nodelist fields: 3 + 1 (added a_S)
-			/* SignificantMiner */
+			/* TopKWY */
 			///update the offIDList
 			offIDList=offIDList+nodeList[offIDList+3]+nf; ///nodeList[offIDList+2]= length of the intersection, 3 is number of field that are always present (ID, count and length of intersection)
 
@@ -2262,7 +2262,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 				cout << "currentpnt->count_a_S="<<currentpnt->count_a_S<<endl;*/
 
 
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (18) to index currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
 				/*temp_as = todelete->at(currentpnt->a_S_index);
@@ -2274,7 +2274,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					cout << "increased count (10) for patricia node of " << currentpnt->count << " to " << HT[index].count << endl;
 					cout << "increased a_S (10) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << HT[index].a_S[0] << endl;
 				}*/
-				/* SignificantMiner */
+				/* TopKWY */
 				///we update intersection and visitedList only of item<coreindex
 
 				///update the intersection in HT
@@ -2355,7 +2355,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 				nextfree=nextfree+numItemUpper+(&currentpnt->intersection)[0]+sizePnt;	///update nextfree
 				upper->pntToNode->count=currentpnt->count;
 				upper->pntToNode->count_a_S=currentpnt->count_a_S;
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//upper->pntToNode->a_S_index = getNewTodeleteIndex();
 				upper->pntToNode->nl_list_index = getNewListIndex();
@@ -2382,7 +2382,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					cout << "count set to " << upper->pntToNode->count << endl;
 					cout << "a_S set to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;
 				}*/
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				///we copy transTmp into the new intersection
@@ -2400,7 +2400,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 					///we must update the field of the pointer to upper
 					upper->pntToNode->count+=currentpnt->count;
 					upper->pntToNode->count_a_S+=currentpnt->count_a_S;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 
 					//cout << "access (20) to index upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
@@ -2419,7 +2419,7 @@ void fillHTCI(NodeIDList nodeList, Itemset* father, typeQueue q){
 						cout << "increased count (11) for patricia node of " << currentpnt->count << " to " << upper->pntToNode->count << endl;
 						cout << "increased a_S (11) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;
 					}*/
-					/* SignificantMiner */
+					/* TopKWY */
 					///as intersection we can use transTmp
 					i=1;	///pointer to elements of upper->pntToNode->intersection
 					j=1;	///pointer to element of transTmp
@@ -2835,7 +2835,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 					ppce->info=new ItsInfo();
 					ppce->info->a_S_=HT[i].a_S;
 					living_infos++; if(living_infos > maxlivinginfos) maxlivinginfos = living_infos;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//ppce->info->a_S=(tipoInt*)malloc((jp+1)*sizeof(tipoInt));
 
@@ -2846,7 +2846,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 
 
 					//time_keeper += get_cpu_time() - temp_time;
-					/* SignificantMiner */
+					/* TopKWY */
 					ppce->info->minItem=father->info->minItem;
 					ppce->info->coreIndex=i;
 
@@ -2860,9 +2860,9 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 							sizeList+=HT[i].visitedList[j].numInInter;	///for the intersection of the node;
 						}
 					}
-					/* SignificantMiner */
+					/* TopKWY */
 					tipoInt nf = 4; // number of nodelist fields: 3 + 1 (added a_S)
-					/* SignificantMiner */
+					/* TopKWY */
 					//sizeList=sizeList+3*HT[i].visitedList[0].IDnode;	///for the ID of the node, the count associated and the length of every intersection
 					sizeList=sizeList+nf*HT[i].visitedList[0].IDnode;	///for the ID of the node, the count associated and the length of every intersection
 					sizeList++;	///for the length of the list
@@ -2903,7 +2903,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 					///now create the NodeIDList that must be memorized
 					ppce->info->IDlist=(tipoInt*)malloc((sizeList)*sizeof(tipoInt));
 					ppce->info->sizelista=sizeList;
-					/* SignificantMiner */
+					/* TopKWY */
 					//temp_time = get_cpu_time();
 					//int are_zeros = 0;
 					ppce->info->nl_a_S_size=0;//HT[i].visitedList[0].IDnode;
@@ -3007,7 +3007,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 					cout << "created nl_a_S (1) for ppce with support: " << ppce->support << endl;
 					cout << "created nl_a_S (1) with size: " << HT[i].visitedList[0].IDnode << " * " << (jp+1) << " = " << (HT[i].visitedList[0].IDnode * (jp+1)) << endl;
 					}*/
-					/* SignificantMiner */
+					/* TopKWY */
 					int ne=1;	///next position for insertion in nodeIDList
 					NodePointer* pnttmp;
 					for (int j=1; j<=HT[i].visitedList[0].IDnode;j++){
@@ -3015,7 +3015,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 						ne++;
 						if(HT[i].visitedList[j].offPntNode==-1){
 							ppce->info->IDlist[ne]=addressOf[HT[i].visitedList[j].IDnode]->count;
-							/* SignificantMiner */
+							/* TopKWY */
 							ne++;
 							int temp_as_value = (addressOf[HT[i].visitedList[j].IDnode]->count >= 128) ? addressOf[HT[i].visitedList[j].IDnode]->a_S_[0] : addressOf[HT[i].visitedList[j].IDnode]->a_S[0];
 							ppce->info->IDlist[ne]=temp_as_value;
@@ -3052,12 +3052,12 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 							//cout << endl<<endl;
 							//time_keeper += get_cpu_time() - temp_time;
 							//cout << "allocated  nl_a_S (1)" << endl;
-							/* SignificantMiner */
+							/* TopKWY */
 						}
 						else{
 							pnttmp=(NodePointer*)&(manualmem[HT[i].visitedList[j].offPntNode]);	///nodePointer of the visited node
 							ppce->info->IDlist[ne]=pnttmp->count;	///for the count of the pointer
-							/* SignificantMiner */
+							/* TopKWY */
 							ne++;
 
 							//cout << "access (21) to pnttmp->a_S_index = " << pnttmp->a_S_index << endl;
@@ -3099,7 +3099,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 							//cout <<endl<<endl;
 							//time_keeper += get_cpu_time() - temp_time;
 							//cout << "allocated  nl_a_S (2)" << endl;
-							/* SignificantMiner */
+							/* TopKWY */
 						}
 						ne++;
 						ppce->info->IDlist[ne]=HT[i].visitedList[j].numInInter;
@@ -3497,12 +3497,12 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 					//living_itemsets++;
 					//minPpce->support=HT[i].count;
 					//minPpce->info=ppce->info;
-					/* SignificantMiner */
+					/* TopKWY */
 					/*temp_time = get_cpu_time();
 					for(int aj=0; aj<jp+1; aj++)
 					minPpce->info->a_S[aj]=HT[i].a_S[aj];
 					//time_keeper += get_cpu_time() - temp_time;*/
-					/* SignificantMiner */
+					/* TopKWY */
 
 					#ifdef trace_state
 					program_state = -25;
@@ -3561,7 +3561,7 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 					}*/
 
 
-					/* SignificantMiner */
+					/* TopKWY */
 					// check if infrequent itemsets can be removed from queue
 					if(DEEP_DEBUG)
 					cout << "checking to remove infrequent itemsets..." << endl;
@@ -3595,13 +3595,13 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
 						//free(todel);
 					//}
 					//time_keeper += get_cpu_time() - temp_time;
-					/* SignificantMiner */
+					/* TopKWY */
 
 					#ifdef trace_state
 					program_state = -22;
 					#endif
 					//time_keeper += get_cpu_time() - temp_time;
-					/* SignificantMiner */
+					/* TopKWY */
 				}
 
 				}
@@ -3644,7 +3644,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 			index=(&patNode->item)[l];
 			///update count
 			HT[index].count+=nodeList[offIDList+1];
-			/* SignificantMiner */
+			/* TopKWY */
 			HT[index].a_S+=nodeList[offIDList+2];
 
 			//temp_time = get_cpu_time();
@@ -3685,7 +3685,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				cout << "nodelist: increased count (3) for patricia node of " << nodeList[offIDList+1] << " to " << HT[index].count << endl;
 				cout << "nodelist: increased a_S of " << nodeList[offIDList+2] << " to " << HT[index].a_S << endl;
 			}
-			/* SignificantMiner */
+			/* TopKWY */
 		}
 
 		///now transTmp contains all the intersection that must be passed to the father of patNode
@@ -3704,7 +3704,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				living_nodepointers++;
 				nextfree=nextfree+sizePnt;	///update nextfree
 				upper->pntToNode->count=nodeList[offIDList+1];
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->count_a_S=nodeList[offIDList+2];
 				//upper->pntToNode->a_S_index = getNewTodeleteIndex();
 				upper->pntToNode->nl_list_index = getNewListIndex();
@@ -3766,7 +3766,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 
 				/*if(DEEP_DEBUG)
 				cout << "nodelist: set a_S to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;*/
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				(&upper->pntToNode->intersection)[0]=0;
@@ -3777,7 +3777,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 			}
 			else{
 				upper->pntToNode->count+=nodeList[offIDList+1];
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->count_a_S+=nodeList[offIDList+2];
 
 				//temp_time = get_cpu_time();
@@ -3830,15 +3830,15 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 
 				/*if(DEEP_DEBUG)
 				cout << "nodelist: increased a_S of " << nodeList[offIDList+2] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;*/
-				/* SignificantMiner */
+				/* TopKWY */
 				(&upper->pntToNode->intersection)[0]=0;
 			}
 		}
 
 		///update the offIDList
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt nf = 4; // number of nodelist fields: 3 + 1 (added a_S)
-		/* SignificantMiner */
+		/* TopKWY */
 		if (nodeList[offIDList+3]==-1){
 			offIDList=offIDList+nf; ///we now that the length of the intersection is 0 (as number of tipoInt that memorize the items in the intersection associated to the pointer)
 		}
@@ -3867,7 +3867,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				index=(&patNode->item)[s];
 				///we know that all the items in the node are all lower than father->info->CI
 				HT[index].count+=currentpnt->count;	///update the count with the count of the pointer
-				/* SignificantMiner */
+				/* TopKWY */
 				//temp_time = get_cpu_time();
 				//cout << "access (25) to currentpnt->a_S_index = " << currentpnt->a_S_index << endl;
 				HT[index].a_S+=currentpnt->count_a_S;
@@ -3876,7 +3876,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				//time_keeper += get_cpu_time() - temp_time;
 				/*if(DEEP_DEBUG)
 				cout << "increased a_S (12) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << HT[index].a_S << endl;*/
-				/* SignificantMiner */
+				/* TopKWY */
 			}
 
 			///now we must create the NodePointer to the father of the patNode and insert it in the pointerList of its greater item
@@ -3893,7 +3893,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				living_nodepointers++;
 				nextfree=nextfree+sizePnt;	///update nextfree
 				upper->pntToNode->count=currentpnt->count;
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->count_a_S=currentpnt->count_a_S;
 				//temp_time = get_cpu_time();
 				//upper->pntToNode->a_S_index = getNewTodeleteIndex();
@@ -3912,7 +3912,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 						cout << todelete->at(upper->pntToNode->a_S_index)[aj] << " ";
 					cout << endl;*/
 				//time_keeper += get_cpu_time() - temp_time;
-				/* SignificantMiner */
+				/* TopKWY */
 				upper->pntToNode->node=upper->ID;
 				upper->pntToNode->nextNodePointer=-1;
 				///insert the node in the pointerList of its greater item
@@ -3924,7 +3924,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 				else{
 					///we must update the field of the pointer to upper
 					upper->pntToNode->count+=currentpnt->count;
-					/* SignificantMiner */
+					/* TopKWY */
 					upper->pntToNode->count_a_S+=currentpnt->count_a_S;
 					//temp_time = get_cpu_time();
 					//cout << "access (27) to upper->pntToNode->a_S_index = " << upper->pntToNode->a_S_index << endl;
@@ -3938,7 +3938,7 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 					//time_keeper += get_cpu_time() - temp_time;
 					/*if(DEEP_DEBUG)
 					cout << "increased a_S (13) for patricia node of " << todelete->at(currentpnt->a_S_index)[0] << " to " << todelete->at(upper->pntToNode->a_S_index)[0] << endl;*/
-					/* SignificantMiner */
+					/* TopKWY */
 					(&upper->pntToNode->intersection)[0]=0;
 				}
 			}
@@ -3977,9 +3977,9 @@ Transaction findCloCI(NodeIDList nodeList, Itemset* father){
 
 NodeIDList changeNIDL(NodeIDList nil){
 
-	/* SignificantMiner */
+	/* TopKWY */
 	tipoInt nf = 4; // number of nodelist fields: 3 + 1 (added a_S)
-	/* SignificantMiner */
+	/* TopKWY */
 
 	NodeIDList toret;	///NodeIDList to return
 	///find the size for the NodeIDList to return
@@ -3989,10 +3989,10 @@ NodeIDList changeNIDL(NodeIDList nil){
 	for(tipoInt j=0;j<nil[0]; j++){
 		toret[j*nf+1]=nil[j+1];	///ID of the node
 		toret[j*nf+2]=addressOf[nil[j+1]]->count;	///count of the node
-		/* SignificantMiner */
+		/* TopKWY */
 		//cout << "a_S lost (4) for support " << toret[j*3+2] << endl;
 		//cout << "having value " << addressOf[nil[j+1]]->a_S << endl;
-		/* SignificantMiner */
+		/* TopKWY */
     int temp_as_value = (addressOf[nil[j+1]]->count >= 128) ? addressOf[nil[j+1]]->a_S_[0] : addressOf[nil[j+1]]->a_S[0];
 		toret[j*nf+3]=temp_as_value;	///a_S of the node
 
@@ -4045,7 +4045,7 @@ int main(int argc, char **argv){
 
 	cout << "\n*******************************************************************************" << endl;
 	cout <<   "*                                                                             *" << endl;
-	cout <<   "*   SignificantMiner: Efficient Incremental Mining of Significant Itemsets    *" << endl;
+	cout <<   "*        TopKWY: Efficient Incremental Mining of Significant Itemsets         *" << endl;
 	cout <<   "*           Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin              *" << endl;
 	cout <<   "*                                                                             *" << endl;
 	cout <<   "*              This program comes with ABSOLUTELY NO WARRANTY;                *" << endl;
@@ -4105,7 +4105,7 @@ int main(int argc, char **argv){
 	info_deleted=0;
 	queue_program_state=0;
 
-	/* SignificantMiner */
+	/* TopKWY */
 	// read all class labels and compute the permutations
 	c_labels.open(c_fileinput.c_str(),ifstream::in); ///<class labels file;
 
@@ -4115,7 +4115,7 @@ int main(int argc, char **argv){
   reading_dataset_time = get_cpu_time() - reading_dataset_time;
   cout << "done in " << reading_dataset_time << " seconds" << endl;
 
-  cout << "Memory peak after permutation matrix allocation: " << (int)measurePeakMemory() << " MByte" << endl;
+  //cout << "Memory peak after permutation matrix allocation: " << (int)measurePeakMemory() << " MByte" << endl;
 
   //cout << "Computing permutations... "<< endl;
   double permutations_time = get_cpu_time();
@@ -4126,7 +4126,7 @@ int main(int argc, char **argv){
 
 	printPermutations(DEEP_DEBUG, SOFT_DEBUG);
 	cout.precision(10);
-	/* SignificantMiner */
+	/* TopKWY */
 
 	/**first scan of the dataset: collect the support of singletons in the count_element array;
 	*/
@@ -4137,13 +4137,13 @@ int main(int argc, char **argv){
   firstscan_dataset_time = get_cpu_time() - firstscan_dataset_time;
   cout << "done in " << firstscan_dataset_time << " seconds" << endl;
 
-  cout << "Memory peak after count_a_S allocation: " << (int)measurePeakMemory() << " MByte" << endl;
+  //cout << "Memory peak after count_a_S allocation: " << (int)measurePeakMemory() << " MByte" << endl;
 
 	#ifdef trace_state
 	program_state = 8;
 	#endif
 
-  cout << "IL operations... "<< endl;
+  //cout << "IL operations... "<< endl;
   double ILoperations_time = get_cpu_time();
 
 	///now count the number of effective items in the dataset
@@ -4166,7 +4166,7 @@ int main(int argc, char **argv){
 			tmpString=itos(j);
 			cloempty=cloempty+tmpString+" ";
 			///now we can consider the item as not frequent
-			cout << j << " is set infrequent"<<endl;
+			//cout << j << " is set infrequent"<<endl;
 			p->count_element[j]=0;
 			/*for(int aj=0; aj<jp+1; aj++)
 			p->count_a_S_element[j*(jp+1)+aj]=0;*/
@@ -4201,9 +4201,9 @@ int main(int argc, char **argv){
 	///print Clo(empty) on output
 	if ( emptyIsNotClosed ){
 		//outfile << cloempty << " : " << num_tr << endl;
-		/* SignificantMiner */
+		/* TopKWY */
 		//outfile << cloempty << " : " << num_tr << " : " << n1 << endl;
-		/* SignificantMiner */
+		/* TopKWY */
 	}
 
 	///create the array for the util node heuristic
@@ -4222,7 +4222,7 @@ int main(int argc, char **argv){
 	dataset.close();
 
   ILoperations_time = get_cpu_time() - ILoperations_time;
-  cout << "done in " << ILoperations_time << " seconds" << endl;
+  //cout << "done in " << ILoperations_time << " seconds" << endl;
 
 	///array for the number of nodes in which an item is
 	numNPI=(tipoInt*)calloc(num_item,sizeof(tipoInt));
@@ -4230,7 +4230,7 @@ int main(int argc, char **argv){
 	/**second scan: "transform" transactions and insert them in the PatriciaTrie
 	*/
 
-  cout << "Memory peak after IL operations allocation: " << (int)measurePeakMemory() << " MByte" << endl;
+  //cout << "Memory peak after IL operations allocation: " << (int)measurePeakMemory() << " MByte" << endl;
 
   cout << "Second scan of dataset and Patricia Trie creation... "<< endl;
   double secondscan_dataset_time = get_cpu_time();
@@ -4335,7 +4335,7 @@ int main(int argc, char **argv){
 
 	s_supp = effect_num_tr;
 
-	cout << "s_supp = " << s_supp << endl;
+	//cout << "s_supp = " << s_supp << endl;
 
 	///create the priority queue for the max-extraction
 	//Queue* q=new Queue();
@@ -4343,7 +4343,7 @@ int main(int argc, char **argv){
 	///create the priority queue for the min-extraction
 	//QueueMin* qMin=new QueueMin();
 
-	// queue for SignificantMiner
+	// queue for TopKWY
 	//typeQueue q=new QueueMinMax();
 	typeQueue q=new QueueMinMax_test(effect_num_tr);
 	//QueueMinMaxResult* q_res=new QueueMinMaxResult();
@@ -4402,12 +4402,12 @@ int main(int argc, char **argv){
 	tipoInt firstNotF=0;
 	while(firstNotF<num_item&&p->IL[firstNotF].count>=suppMin){
 		HT[firstNotF].count=0;			///count of the extension
-		/* SignificantMiner */
+		/* TopKWY */
 		//free(HT[firstNotF].a_S);
 		//HT[firstNotF].a_S=(tipoInt*)malloc((jp+1)*sizeof(tipoInt));
 		//for(int aj=0; aj<jp+1; aj++)
 		HT[firstNotF].a_S=0;
-		/* SignificantMiner */
+		/* TopKWY */
 		HT[firstNotF].intersection=NULL;	///intersection on the prefix
 		HT[firstNotF].visitedList[0].IDnode=0;		///number of vidited elements
 		HT[firstNotF].pointerList=-1;		///empty list
@@ -4457,7 +4457,8 @@ int main(int argc, char **argv){
 
 	max_ram_l1 = 0.8 * (double)max_ram;
 	max_ram_l2 = 0.9 * (double)max_ram;
-	cout << "Max allowed ram levels: " << max_ram << " L1: " << max_ram_l1 << " L2: " << max_ram_l2 << endl;
+	//cout << "Max allowed ram levels: " << max_ram << " L1: " << max_ram_l1 << " L2: " << max_ram_l2 << endl;
+	cout << "Max allowed memory: " << max_ram << endl;
 
 	long last_itemset_report = 0;
 	long last_itemset_memorycheck = 0;
@@ -4870,7 +4871,7 @@ int main(int argc, char **argv){
 		#endif
 
 
-		/* SignificantMiner */
+		/* TopKWY */
 
 		/*for(int aj=0; aj < todelete->size(); aj++){
 			cout << "(2) freed memory at " << todelete->at(aj)->a_S << endl;
@@ -4888,7 +4889,7 @@ int main(int argc, char **argv){
 
 		resetListIndex();
 
-		/* SignificantMiner */
+		/* TopKWY */
 
 		/*cout << "here ok 7.5" << endl;*/
 
@@ -4932,7 +4933,7 @@ int main(int argc, char **argv){
 			//cout << "toOutput_pattern->log_p_value = " << toOutput_pattern->log_p_value << endl;
 
 			for (int i=1; i<=max->info->prefixCI[0];i++){
-				toOutput_pattern->itemset[i]=max->info->prefixCI[i];
+				toOutput_pattern->itemset[i]=p->IL[max->info->prefixCI[i]].item;
 			}
 			for (int i=1; i<=toOutput[0];i++){
 				toOutput_pattern->itemset[i+max->info->prefixCI[0]]=toOutput[i];
@@ -5083,7 +5084,7 @@ int main(int argc, char **argv){
 		cout << "minimum p-values: " << endl;}
 		if(DEEP_DEBUG)
 		printMinPvalues();*/
-		/* SignificantMiner */
+		/* TopKWY */
 		// check if infrequent itemsets can be removed from queue
 
 		/*cout << "here ok 8.7" << endl;*/
@@ -5093,7 +5094,7 @@ int main(int argc, char **argv){
 		program_state = -7;
 		#endif
 
-		/* SignificantMiner */
+		/* TopKWY */
 			// check if infrequent itemsets can be removed from queue
 			if(DEEP_DEBUG)
 			cout << "checking to remove infrequent itemsets..." << endl;
@@ -5127,7 +5128,7 @@ int main(int argc, char **argv){
 				//free(todel);
 			//}
 			//time_keeper += get_cpu_time() - temp_time;
-			/* SignificantMiner */
+			/* TopKWY */
 
 		///update statistics
 
@@ -5328,7 +5329,7 @@ int main(int argc, char **argv){
 			outfile << toOutput[i] << " ";
 		}
 		//outfile << ": " << max->support << endl;
-		/* SignificantMiner */
+		/* TopKWY */
 		outfile << ": " << max->support << " : " << max->info->a_S[0] << endl;
     #endif
 
@@ -5385,8 +5386,8 @@ int main(int argc, char **argv){
 	cout << "Number of itemset explored: " ;
 	if ( emptyIsNotClosed ) cout << (produced+1) <<endl;
 	else cout << produced <<endl;
-	cout << "tested " << tested  << endl;
-	cout << "underbound " << inferior_psi_bound_happened_neglect  << endl;
+	cout << "Tested patterns on the permutations " << tested  << endl;
+	//cout << "underbound " << inferior_psi_bound_happened_neglect  << endl;
 	cout << "\n------------- PRINTING STATISTICS ------------\n" << endl;
 	cout << "S.I. Length\tNumber of S.I" << endl;
 	for (int i=1; i<=max_trans_length; i++){
@@ -5421,7 +5422,7 @@ int main(int argc, char **argv){
 	}
   #endif
 
-	/* SignificantMiner */
+	/* TopKWY */
 	// end here
 	cout << "Total running time time: " << total_time << endl;
 	cout << "Time to build patricia trie: " << time_pat << endl;
@@ -5432,13 +5433,13 @@ int main(int argc, char **argv){
 	/*cout << "Time for ppce 1 operations: " << timekeepers[0] << endl;
 	cout << "Time for ppce 0 operations: " << timekeepers[1] << endl;
 	cout << "Time for cleanup operations: " << timekeepers[2] << endl;*/
-	cout << "queue size: " << q->getInqueue() << endl;
+	//cout << "queue size: " << q->getInqueue() << endl;
 	cout << "max queue size: " << maxinqueue << endl;
-	cout << "alive itemsets in memory: " << living_itemsets << endl;
-	cout << "alive nodePointers in memory: " << living_nodepointers << endl;
-	cout << "alive infos in memory: " << living_infos << endl;
-	cout << "deleted infos: " << info_deleted << endl;
-	cout << "sizeof(Itemset) " << sizeof(Itemset) << endl;
+	//cout << "alive itemsets in memory: " << living_itemsets << endl;
+	//cout << "alive nodePointers in memory: " << living_nodepointers << endl;
+	//cout << "alive infos in memory: " << living_infos << endl;
+	//cout << "deleted infos: " << info_deleted << endl;
+	//cout << "sizeof(Itemset) " << sizeof(Itemset) << endl;
   #ifdef print_list_stats
 	cout << "avg nlists length " << avg << endl;
 	cout << "avg nlists operations " << avg_op << endl;
@@ -5446,16 +5447,16 @@ int main(int argc, char **argv){
 	//cout << "q->maxSize " << q->maxSize << endl;
 	//cout << "qMin->maxSize " << qMin->maxSize << endl;
 	//cout << "max number of nl_a_S in memory " << maxnlinqueue << endl;
-	cout << "max number of info in memory " << maxlivinginfos << endl;
-	cout << "memory for patricia trie: " << pat_tree_ram << " MByte" << endl;
-	cout << "memory usage for permutation matrix: " << perm_matrix_space << " MByte" << endl;
-	cout << "memory usage for count_a_S_element: " << count_a_S_element_space << " MByte" << endl;
+	//cout << "max number of info in memory " << maxlivinginfos << endl;
+	cout << "(effective) memory for patricia trie: " << pat_tree_ram << " MByte" << endl;
+	cout << "(theoretical) memory usage for permutation matrix: " << perm_matrix_space << " MByte" << endl;
+	//cout << "memory usage for count_a_S_element: " << count_a_S_element_space << " MByte" << endl;
 	cout << "total peak memory usage: " << measurePeakMemory() /*memory_peak*/ << " MByte" << endl;
-	cout << "nlasmalloc " << nlasmalloc <<endl;
+	//cout << "nlasmalloc " << nlasmalloc <<endl;
 	//sleep(10);
 
   // debug results queue
-  q_res->printElements();
+  //q_res->printElements();
 
 	std::ofstream outfile_;
 
@@ -5468,7 +5469,7 @@ int main(int argc, char **argv){
 	program_state = -91;
 	#endif
 
-	cout << "Program closed"<< endl;
+	cout << "Program finished correctly"<< endl;
 
   kill(getpid(), SIGKILL);
 
@@ -5616,7 +5617,7 @@ int main(int argc, char **argv){
 					}
 
 					clearHT(max->info->minItem);		///now clear the HT for next ppc-e generation
-					/* SignificantMiner */
+					/* TopKWY */
 					/*for(int aj=0; aj < todelete->size(); aj++){
 						//cout << "(2) freed memory at " << todelete->at(aj)->a_S << endl;
 						free(todelete->at(aj)->a_S);
@@ -5625,7 +5626,7 @@ int main(int argc, char **argv){
 					todelete->clear();*/
 					resetToDel();
 					resetListIndex();
-					/* SignificantMiner */
+					/* TopKWY */
 					nextfree=manualmem;	///free the manualmem
 
 					for (int i=1; i<=toOutput[0];i++){
@@ -5642,7 +5643,7 @@ int main(int argc, char **argv){
 						outfile << toOutput[i] << " ";
 					}
 					//outfile << ": " << max->support << endl;
-					/* SignificantMiner */
+					/* TopKWY */
 					outfile << ": " << max->support << " : " << max->info->a_S[0] << endl;
           #endif
 
@@ -5717,7 +5718,7 @@ int main(int argc, char **argv){
 						outfile << toOutput[i] << " ";
 					}
 					//outfile << ": " << max->support << endl;
-					/* SignificantMiner */
+					/* TopKWY */
 					outfile << ": " << max->support << " : " << max->info->a_S[0] << endl;
           #endif
 

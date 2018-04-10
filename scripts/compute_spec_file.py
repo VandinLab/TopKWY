@@ -44,8 +44,6 @@ print 'total = '+str(total)
 print 'avg '+str(float(total) / float(numtrans))
 
 #write the spec file
-alpha = 0.05
-jp = 10000
 newspecfilename = dat_name + "_new.spec"
 f_out_spec = open(newspecfilename,'w')
 f_out_spec.write(dat_name + ".dat\n")
@@ -53,7 +51,5 @@ f_out_spec.write(str(maxitem+1) + "\n")
 f_out_spec.write(str(maxtranslength+1) + "\n")
 f_out_spec.write(str(numtrans+1) + "\n")
 f_out_spec.write(dat_name + ".labels" + "\n")
-f_out_spec.write(str(alpha) + "\n")
-f_out_spec.write(str(jp) + "\n")
 f_out_spec.close()
 print "spec file done for "+newspecfilename

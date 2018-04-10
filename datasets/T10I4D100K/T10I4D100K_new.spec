@@ -3,5 +3,3 @@ T10I4D100K_new.dat
 1
 100001
 T10I4D100K_new.labels
-0.05
-1000

@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin
- * This file is part of SignificantMiner and it is based on TopKMiner
+ * This file is part of TopKWY and it is based on TopKMiner
  * Copyright (C) 2008 Andrea Pietracaprina, Fabio Vandin
  * Copyright (C) 2008 Advanced Computing Group, University of Padova, Italy
  *
- * SignificantMiner is free software; you can redistribute it and/or
+ * TopKWY is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -73,9 +73,9 @@ void PatriciaNode::print(int a){
 	cout << "\n---------PatriciaNode-----------\n" << endl;
 	cout << "address= " << this << endl;
 	cout << "count= " << count << endl;
-	/* SignificantMiner */
+	/* TopKWY */
 	cout << "a_S= " << a_S << endl;
-	/* SignificantMiner */
+	/* TopKWY */
 	cout << "address of pointer to lastItem= " << &lastItem << endl;
 	cout << "lastItem address= " << lastItem <<endl;
 	if (lastItem!=NULL)
@@ -141,11 +141,11 @@ PatriciaTrie::PatriciaTrie(){
 	root=(PatriciaNode*)calloc(1,sizeNode);
 	///assign the standard values for the root
 	root->count = 0;
-	/* SignificantMiner */
+	/* TopKWY */
 	root->a_S = (uint8_t*)malloc((jp+1)*sizeof(uint8_t));
 	for(int aj=0; aj<jp+1; aj++)
 		root->a_S[aj]=0;
-	/* SignificantMiner */
+	/* TopKWY */
 	root->lastItem= NULL;
 	///create a hash table initially NULL
 	root->hash=NULL;
@@ -263,19 +263,19 @@ void PatriciaTrie::IL_sort(tipoInt left, tipoInt right) {
 	/* swap pivot with last element */
 	tempIL.item = IL[p].item;
 	tempIL.count = IL[p].count;
-	/* SignificantMiner */
+	/* TopKWY */
 	tempIL.a_S = IL[p].a_S;
-	/* SignificantMiner */
+	/* TopKWY */
 	IL[p].item = IL[right].item;
 	IL[p].count = IL[right].count;
-	/* SignificantMiner */
+	/* TopKWY */
 	IL[p].a_S = IL[right].a_S;
-	/* SignificantMiner */
+	/* TopKWY */
 	IL[right].item=tempIL.item;
 	IL[right].count=tempIL.count;
-	/* SignificantMiner */
+	/* TopKWY */
 	IL[right].a_S=tempIL.a_S;
-	/* SignificantMiner */
+	/* TopKWY */
 	tipoInt re=right-1; //re=rightmost element < pivot
 	//set the right re
 	while (re>=left && IL[re].count==pivot){
@@ -292,15 +292,15 @@ void PatriciaTrie::IL_sort(tipoInt left, tipoInt right) {
 			if(IL[r].count==pivot){
 				tempIL.item = IL[r].item;
 				tempIL.count = IL[r].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				tempIL.a_S = IL[r].a_S;
 				IL[r].item = IL[re].item;
 				IL[r].count = IL[re].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[r].a_S = IL[re].a_S;
 				IL[re].item=tempIL.item;
 				IL[re].count=tempIL.count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[re].a_S=tempIL.a_S;
 				re--;
 				numPiv++;
@@ -313,19 +313,19 @@ void PatriciaTrie::IL_sort(tipoInt left, tipoInt right) {
 			if (IL[l].count==pivot){
 				// l<- r,re<-l,r<-re
 				tempIL.count=IL[l].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				tempIL.a_S=IL[l].a_S;
 				tempIL.item=IL[l].item;
 				IL[l].count=IL[r].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[l].a_S=IL[r].a_S;
 				IL[l].item=IL[r].item;
 				IL[r].count=IL[re].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[r].a_S=IL[re].a_S;
 				IL[r].item=IL[re].item;
 				IL[re].count=tempIL.count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[re].a_S=tempIL.a_S;
 				IL[re].item=tempIL.item;
 				r--;
@@ -335,15 +335,15 @@ void PatriciaTrie::IL_sort(tipoInt left, tipoInt right) {
 			else{
 				tempIL.item = IL[l].item;
 				tempIL.count = IL[l].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				tempIL.a_S = IL[l].a_S;
 				IL[l].item = IL[r].item;
 				IL[l].count = IL[r].count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[l].a_S = IL[r].a_S;
 				IL[r].item=tempIL.item;
 				IL[r].count=tempIL.count;
-				/* SignificantMiner */
+				/* TopKWY */
 				IL[r].a_S=tempIL.a_S;
 			}
 		}
@@ -352,15 +352,15 @@ void PatriciaTrie::IL_sort(tipoInt left, tipoInt right) {
 	//copy the element equal to pivot in the middle, stopping when swap indices meet
 	for (int j=0; j<numPiv && j<=((right-l)/2); j++){
 		tempIL.count=IL[l+j].count;
-		/* SignificantMiner */
+		/* TopKWY */
 		tempIL.a_S=IL[l+j].a_S;
 		tempIL.item=IL[l+j].item;
 		IL[l+j].count=IL[right-j].count;
-		/* SignificantMiner */
+		/* TopKWY */
 		IL[l+j].a_S=IL[right-j].a_S;
 		IL[l+j].item=IL[right-j].item;
 		IL[right-j].count=tempIL.count;
-		/* SignificantMiner */
+		/* TopKWY */
 		IL[right-j].a_S=tempIL.a_S;
 		IL[right-j].item=tempIL.item;
 	}
@@ -384,7 +384,7 @@ void PatriciaTrie::printIL(){
 /**insert transaction t in the PatriciaTrie at the node pNode;
 */
 
-void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // SignificantMiner
+void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // TopKWY
 //void insert(Transaction t, PatriciaNode* pNode){
 
 	/*if(DEEP_DEBUG){
@@ -403,9 +403,9 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 	PatriciaNode* child; 	///child where to look for the insertion
 	PatriciaNode** prev;	///pointer to the field in which the new node will be inserted
 	tipoInt elem=0; 	///first item in a nodes that is in a bucket of the hash table
-	/* SignificantMiner */
+	/* TopKWY */
 	//long long offset = ((long long)t_index) * (jp_long+1);
-	/* SignificantMiner */
+	/* TopKWY */
 
 	if (t[0]==0) return;	/// base case: insertion of a null transaction
 
@@ -441,7 +441,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 		pNode->numChildren+=1;
 		child=createNode(t,true);
 		//cout << "   point 1"  << endl;
-		/* SignificantMiner */
+		/* TopKWY */
 		uint8_t *temp_ptr = child->a_S;
 		for(int j=0; j < jp+1; j++){
 			//index = offset + j;
@@ -450,7 +450,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 				temp_ptr[j] = permuted_transaction[j];
 		}
 		//cout << "   point 2"  << endl;
-		/* SignificantMiner */
+		/* TopKWY */
 		(*prev)=child;
 		///update the number of nodes of the PatriciaTrie
 		numNodes++;
@@ -503,7 +503,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 						}
 					}
 					//cout << "   point 4"  << endl;
-					/* SignificantMiner */
+					/* TopKWY */
 
 					///for the util node heuristic
 					/*if (child->count>suppMin){
@@ -543,7 +543,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 						}
 					}
 					//cout << "   point 6"  << endl;
-					/* SignificantMiner */
+					/* TopKWY */
 					i=t[0]+1;
 					///update the number of nodes of the PatriciaTrie
 					numNodes=numNodes+2;
@@ -591,7 +591,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 					t[i]=t[0]-i;
 					tnew=&t[i];
 					//insert(tnew,child); /** Recurse */
-					/* SignificantMiner */
+					/* TopKWY */
 					//if(DEEP_DEBUG)
 					#ifdef debug_patricia_creation
 					cout << "recursion! " << endl;
@@ -613,7 +613,7 @@ void insert(Transaction t, PatriciaNode* pNode, bool* permuted_transaction){ // 
 				temp_ptr[j] = permuted_transaction[j];
 			}
 			//cout << "   point 10"  << endl;
-			/* SignificantMiner */
+			/* TopKWY */
 			(*prev)=child;
 			child->next=tmpPoint;
 			///update the number of nodes of the PatriciaTrie
@@ -1005,7 +1005,7 @@ void PatriciaTrie::secondScan_new(){
 
 	cached_a_S = 1000000000.0 / ((double)(sizeof(tipoInt) * jp));
 
-	cout << "cached_a_S = " << cached_a_S << endl;
+	//cout << "cached_a_S = " << cached_a_S << endl;
 
 	for(int aj = 0; aj<=cached_a_S && aj<num_item; aj++){
 		IL[aj].a_S_permutations=(tipoInt*)calloc(jp+1,sizeof(tipoInt));
@@ -1124,7 +1124,7 @@ void PatriciaTrie::secondScan_new(){
 	if(DEEP_DEBUG)
 	cout << "second scan ok"<< endl;
 
-	cout << " random time = " << random_time << endl;
+	cout << "Time to compute permutations = " << random_time << endl;
 }
 
 /*void PatriciaTrie::secondScan(){

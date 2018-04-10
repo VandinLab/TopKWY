@@ -1,10 +1,10 @@
 /*
  * Copyright (C) 2017 Leonardo Pellegrina, Fabio Vandin
- * This file is part of SignificantMiner and it is based on TopKMiner
+ * This file is part of TopKWY and it is based on TopKMiner
  * Copyright (C) 2008 Andrea Pietracaprina, Fabio Vandin
  * Copyright (C) 2008 Advanced Computing Group, University of Padova, Italy
  *
- * SignificantMiner is free software; you can redistribute it and/or
+ * TopKWY is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
@@ -62,7 +62,7 @@ class ItsInfo{
 		tipoInt sizelista;		///for statistic: the total of the memory used for the list of ID  // deprecated
 		Transaction prefixCI; ///here we memorize the coreIndex-prefix of the itemset, so there is no need to memorize them in the intersection of the IDlist
 		tipoInt fileName;		///if typeList is =2, this is the name of the file that contains the list  // deprecated
-		/* SignificantMiner */
+		/* TopKWY */
 		tipoInt* a_S; /// a_S of the itemset // deprecated
 		tipoInt max_a_S;
 		tipoInt min_a_S;
@@ -78,7 +78,7 @@ class ItsInfo{
 
 		tipoInt nl_a_S_size; /// number of nodes for typelist=1 nodes  // deprecated
 		~ItsInfo(void);
-		/* SignificantMiner */
+		/* TopKWY */
 };
 
 ItsInfo::~ItsInfo(void) {
