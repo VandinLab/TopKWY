@@ -116,7 +116,7 @@ for K in K_:
 						running_datasets.remove(dat_name)
 						found = 1
 
-					searchObj = re.match( r'tested .*', line, re.M|re.I)
+					searchObj = re.match( r'tested patterns on the permutations .*', line, re.M|re.I)
 					if searchObj:
 						tested_txt = searchObj.group()
 						tested_txt = tested_txt[7:]

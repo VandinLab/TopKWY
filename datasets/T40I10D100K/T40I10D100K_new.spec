@@ -1,5 +1,0 @@
-T40I10D100K_new.dat
-1000
-1
-100001
-T40I10D100K_new.labels

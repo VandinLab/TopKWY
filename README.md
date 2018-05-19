@@ -21,7 +21,7 @@ The package contains three folders:
 
 To reproduce the experiments described in "Efficient Mining of the Most Significant Patterns with Permutation Testing", you can follow these steps:
 1. TopKWY compilation: use the `make` command from inside the /src/ folder.
-2. Files organisation: copy the *topkwy* executable and *runexperiments_all.py* in the main folder.
+2. Files organisation: copy the *topkwy* executable and *runexperiments_all.py* in the main folder. Then unzip the *datasets/datasets.zip* file. You should have the 19 subfolders for the datasets in the /datasets/ directory.
 3. Run the script for experiments with `python runexperiments_all.py`. This script launches TopKWY with jp=10^4, alpha=0.05, k = [10,100,1000,100000,1000000] for all 19 datasets, performing for each of those combination 10 runs. These parameters can be changed inside the *runexperiments_all.py* file.
 4. Results: the script creates the file *all_results.csv* which contains average and variance of all the runs for every dataset and every value of k.
 
