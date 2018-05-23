@@ -119,7 +119,7 @@ for K in K_:
 					searchObj = re.match( r'tested patterns on the permutations .*', line, re.M|re.I)
 					if searchObj:
 						tested_txt = searchObj.group()
-						tested_txt = tested_txt[7:]
+						tested_txt = tested_txt[36:]
 						tested_value = int(tested_txt)
 
 					searchObj = re.match( r'Number of significant itemsets: .*', line, re.M|re.I)
