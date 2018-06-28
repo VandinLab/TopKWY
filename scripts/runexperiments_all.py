@@ -35,7 +35,7 @@ for K in K_:
 
 
 	def launch_experiment(dat_name , K , jp , alpha , flag , run_id):
-		print "Run new experiment "+str(run_id)+" for " + dat_name
+		print "Run experiment "+str(run_id+1)+" for " + dat_name
 		print "K = "+str(K)+" jp = "+str(jp)+" alpha = "+str(alpha)+" flag = "+str(flag)
 		# remove topkwy executable from dataset folder
 		cmd = "rm datasets/" + dat_name + "/" + topkwy_name
@@ -45,7 +45,7 @@ for K in K_:
 		os.system(cmd)
 		# launch the experiment
 		out_file_name = 'experiment_'+flag+'_run'+str(run_id)+"_"+str(alpha)+"_"+str(jp)+'_'+str(K)+'.txt';
-		cmd = "cd datasets/" + dat_name + "/ && ./"+topkwy_name+" " + dat_name + "_new.spec "+str(K)+" "+str(jp)+" "+str(alpha)+" "+str(maxram)+"  > "+out_file_name+" 2>&1 &"
+		cmd = "cd datasets/" + dat_name + "/ && ./"+topkwy_name+" -s " + dat_name + "_new.spec -k "+str(K)+" -j "+str(jp)+" -a "+str(alpha)+" -r "+str(maxram)+"  > "+out_file_name+" 2>&1 &"
 		os.system(cmd)
 		#print cmd
 

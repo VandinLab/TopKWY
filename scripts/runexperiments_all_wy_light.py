@@ -113,7 +113,8 @@ while (running == 1):
 
 			else:
 				ok = 0
-				f_in.close()
+
+			f_in.close()
 
 
 	# check if all experiments concluded

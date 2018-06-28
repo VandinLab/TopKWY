@@ -27,10 +27,12 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <iostream>
 #include <fstream>
 #include <string.h>
 #include <sstream>
+#include <unistd.h>
 
 #define DEEP_DEBUG 0
 #define SOFT_DEBUG 0
@@ -187,6 +189,7 @@ double alpha;
 
 ///number of significant patterns to find
 int K_significant_patterns;
+int K_significant_patterns_total;
 
 ///permutations matrix
 
@@ -764,43 +767,70 @@ PatriciaNode* split_2node(PatriciaNode* node, tipoInt ind1, Transaction tran, bo
 
 int readSpecFile(int argc, char *argv[]){
 	string line;
-	if (argc<5){
-		cout<< "\nNot enough parameters.\n" << endl;
-		cout<< "\nUsage: ./topkwy file.spec k jp alpha [max_ram]\n" << endl;
+
+	// default values for parameters
+	K_significant_patterns = 1000000;
+	char *input_file;
+	max_ram = 100000; // 100 GB
+	alpha = 0.05;
+	jp = 10000;
+	int maxsize = -1; // not used for now
+	bool spec_file_given = false;
+
+	char opt;
+  while ( ( opt = getopt ( argc, argv, "m:j:s:r:k:a:" ) ) != -1 ) {
+    switch ( opt ) {
+    case 'm': maxsize = atoi(optarg); break;
+    case 'j': jp = atoi(optarg); break;
+    case 'a': alpha = atof(optarg); break;
+    case 's': input_file = optarg; spec_file_given = true; break;
+    case 'k': K_significant_patterns = atoi(optarg); break;
+		case 'r': max_ram = atoi(optarg) * 1000; break;
+    }
+  }
+
+	// check for the spec file, prompt the parameters info
+	if(!spec_file_given){
+		cout<< "\nSpec file was not given.\n" << endl;
+		cerr << "Parameters:" << endl
+		<< "    -s dataset .spec file" << endl
+		<< "    -a [Target FWER] (default: 0.05)" << endl
+		//<< "    -m [Maximum size of each itemset] (default: unlimited)" << endl
+		<< "    -j [Number of permutations] (default: 10e4)" << endl
+		<< "    -k [maximum number of significant results] (default: 10e6)" << endl
+		<< "       [if set to -1, computes only the corrected significance threshold]" << endl
+		<< "    -r [maximum memory for patterns exploration, in GB (default: 100)]" << endl
+		<< endl;
 		return 0;
 	}
-	ifstream specfile (argv[1]);
-	k=10000000;
-	k_max=k;
-	K_significant_patterns=atoi(argv[2]);
-	jp=0;
-	alpha=0.0;
-	jp=atoi(argv[3]);
-	alpha=atof(argv[4]);
-	max_ram = 100000;
-	if(argc>=6){
-		max_ram=atoi(argv[5]);
-		if ( max_ram < 0 ){
-			cout << "Invalid value for max ram\n" << endl;
-			return 0;
-		}
+
+	// check parameters correctness
+	ifstream specfile (input_file);
+	if (!specfile.is_open()){
+		cout << "Unable to open specification file\n";
+		return 0;
 	}
-	if ( k < -1 ){
+	k=K_significant_patterns;
+	k_max=k;
+	K_significant_patterns_total = K_significant_patterns;
+	if ( k < 1 && k != -1 ){
 		cout << "Invalid value for k\n" << endl;
 		return 0;
 	}
 	if ( jp < 1 ){
-		cout << "Invalid value for jp\n" << endl;
+		cout << "Invalid value for jp!" << endl;
 		return 0;
 	}
 	if ( alpha < 0.0 ){
 		cout << "Invalid value for alpha\n" << endl;
 		return 0;
 	}
-	if (!specfile.is_open()){
-		cout << "Unable to open specification file\n";
-		return 0;
+	if ( max_ram < 0 ){
+			cout << "Invalid value for max ram\n" << endl;
+			return 0;
 	}
+
+	// read spec file
 	int i=0;
 	while (! specfile.eof() && i<7){
 		i++;

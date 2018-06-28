@@ -40,13 +40,12 @@ double *min_pval;
 int N_over_2;
 // corrected significance threshold
 double delta;
+double log_delta;
 // number of p-values below delta
 int below_delta;
 std::set<int> below_delta_indexes;
 // minimum support
 int sigma;
-// print on files info about statistical testing
-ofstream out_file_stat;
 // time needed to process solutions
 double p_values_time;
 // array used to return values
@@ -66,12 +65,32 @@ double log_10;
 int log_method;
 
 double start_instant;
+double time_to_update_delta;
 
 std::vector< std::vector<double> > p_vals_cached;
 std::vector< std::vector<double> > log_p_vals_cached;
 
 std::vector< long > itemsets_LAMP_count;
 std::vector< long > itemsets_LAMP_count_naive;
+
+
+struct alpha_quantile_tuple{
+	double p_value;
+	int index;
+};
+
+class compare_alpha_quantile
+{
+public:
+    bool operator() (alpha_quantile_tuple a, alpha_quantile_tuple b)
+    {
+        return a.p_value <= b.p_value;
+    }
+};
+
+alpha_quantile_tuple temp_alpha_item;
+
+std::priority_queue<alpha_quantile_tuple, std::vector<alpha_quantile_tuple>, compare_alpha_quantile> alpha_quantile;
 
 void benchmarklogoperations();
 
@@ -211,6 +230,7 @@ void psi_init(){
 }
 
 
+
 void initClassLabels(){
 	string line;
 	string end = "";
@@ -303,14 +323,20 @@ void initClassLabels(){
 
 	// initialize minimum support and delta
 	sigma = 1;
-	delta = psi[sigma];
+	delta = alpha;
+	log_delta = log10(delta);
+	while(psi[sigma] > delta){
+		++sigma;
+	}
+	if(sigma > suppMin){
+		suppMin = sigma;
+		suppMinCurr = sigma;
+	}
 
 	// output file
 	std::stringstream testing1output_path_result;
   testing1output_path_result << fileinput << "_" << K_significant_patterns << "_" << jp << "_testing.txt";
 	string output_path_testing = testing1output_path_result.str();
-	out_file_stat.open(output_path_testing.c_str());
-	out_file_stat << "X_S;sigma;delta;elapsed;produced;" << endl;
 
 	// time for p-values
 	p_values_time = 0.0;
@@ -756,9 +782,6 @@ double computePValue(int x_S , int a_S){
 
 	precompute_pvals(x_S);
 
-	if(SOFT_DEBUG)
-	out_file_stat << "processed itemset with support " << x_S << endl;
-
 	return hypergeom_pvals[a_S];
 
 }
@@ -793,29 +816,26 @@ double* computePValues(int x_S , int* a_S){
 
 	precompute_pvals(x_S);
 
-	if(SOFT_DEBUG)
-	out_file_stat << "processed itemset with support " << x_S << endl;
+	double s_inst = get_cpu_time();
 
 	for(int aj=0; aj<jp+1; aj++){
 		//cout << "aj " << aj<<endl;
 		to_return[aj]=hypergeom_pvals[a_S[aj]];
 		if(to_return[aj] < min_pval[aj]){
 			min_pval[aj] = to_return[aj];
-
-			if(SOFT_DEBUG){
-				out_file_stat << "improved min p-value of permutation with index " << aj << endl;
-				out_file_stat << "x_S = " << x_S << " a_S[aj] = " << a_S[aj] << endl;
-			}
 		}
-		if(aj > 0 && to_return[aj] < delta && quantile_indexes[aj] == false){
-			/*updated_min_pvals = true;
-			cout << "improved min p-value of permutation with index " << aj << endl;
-			cout << "x_S = " << x_S << " a_S[aj] = " << a_S[aj] << endl;*/
-			below_delta++;
-			quantile_indexes[aj] = true;
-			/*below_delta_indexes.insert(aj);*/
-			if(SOFT_DEBUG)
-			out_file_stat << "p-values below delta " << below_delta << endl;
+		if(aj > 0 && to_return[aj] <= delta){
+			if(quantile_indexes[aj] == false){
+				temp_alpha_item.p_value = to_return[aj];
+				temp_alpha_item.index = aj;
+				alpha_quantile.push(temp_alpha_item);
+				/*updated_min_pvals = true;
+				cout << "improved min p-value of permutation with index " << aj << endl;
+				cout << "x_S = " << x_S << " a_S[aj] = " << a_S[aj] << endl;*/
+				below_delta++;
+				quantile_indexes[aj] = true;
+				/*below_delta_indexes.insert(aj);*/
+			}
 		}
 	}
 	/*
@@ -915,43 +935,85 @@ double* computePValues(int x_S , int* a_S){
 
 	}*/
 
-	/* update minsupp if needed */
-	while((double)below_delta / (double)jp > alpha ){
-		/* increase sigma */
-		sigma++;
-		delta = psi[sigma];
+	if((double)below_delta / (double)jp > alpha){
 
-		//if(SOFT_DEBUG){
-	cout << "below_delta " << below_delta << endl;
-	cout << "FWER " << ((double)below_delta / (double)jp) << endl;
-		cout << "increased sigma to " << sigma << endl;
-		cout << "delta is now " << delta << endl;//}
+		/*cout << "------------------------" << endl;
+		cout << "Increasing delta to control FWER " << endl;
+		cout << "alpha_quantile.size() (0) " << alpha_quantile.size() << endl;
+		cout << "below_delta " << below_delta << endl;*/
 
-		below_delta = 0;
-		/*below_delta_indexes.clear();*/
+		/* delta needs to be lowered since FWER > 0.05 */
+		while((double)below_delta / (double)jp > alpha || alpha_quantile.top().p_value == delta){
 
-		out_file_stat << x_S;
-		out_file_stat << ";" << sigma;
-		out_file_stat << ";" << delta;
-		out_file_stat << ";" << (int)(get_cpu_time() - start_instant);
-		out_file_stat << ";" << produced << ";" << endl;
+			/*cout << "alpha_quantile.size() (1) " << alpha_quantile.size() << endl;
+			cout << "below_delta " << below_delta << endl;*/
 
-		for(int aj=1; aj<jp+1; aj++){
-				quantile_indexes[aj] = min_pval[aj] < delta;
-				below_delta+=quantile_indexes[aj];
-				/*below_delta_indexes.insert(aj);*/
+			// remove all elements of alpha_quantile with outdated p-value
 
-				if(SOFT_DEBUG)
-				out_file_stat << "p-values below delta " << below_delta << endl;
+			while(alpha_quantile.top().p_value > min_pval[ alpha_quantile.top().index ]){
+				/*cout << " removed outdated p-value at index " << alpha_quantile.top().index << endl;
+				cout << " alpha_quantile.top().p_value " << alpha_quantile.top().p_value << endl;
+				cout << " min_pval[ alpha_quantile.top().index ] " << min_pval[ alpha_quantile.top().index ] << endl;*/
+				temp_alpha_item = alpha_quantile.top();
+				temp_alpha_item.p_value = min_pval[ temp_alpha_item.index ];
+				alpha_quantile.pop();
+				alpha_quantile.push(temp_alpha_item);
+			}
+
+			delta = min(delta , alpha_quantile.top().p_value);
+			alpha_quantile.pop();
+			--below_delta;
+
 		}
+		//cout << "below_delta reduced to " << below_delta << endl;
+
+		while(alpha_quantile.top().p_value > min_pval[ alpha_quantile.top().index ])
+			alpha_quantile.pop();
+
+			delta = min(delta , alpha_quantile.top().p_value);
+			log_delta = min( (delta > 0.0) ? log10(delta) : 0.0 , log_delta);
+
+			//cout << "delta (after delta lift)" << delta << endl;
+			/* update minsupp if needed */
+			while(psi[sigma] > delta){
+				++sigma;
+			}
+
+			below_delta = 0;
+			/*below_delta_indexes.clear();*/
+
+			for(int aj=1; aj<jp+1; aj++){
+					quantile_indexes[aj] = min_pval[aj] <= delta;
+					below_delta+=quantile_indexes[aj];
+					/*below_delta_indexes.insert(aj);*/
+			}
+
+
+
+			/*cout << "below_delta is now " << below_delta << endl;
+			cout << "FWER " << ((double)below_delta / (double)jp) << endl;
+			cout << "increased sigma to " << sigma << endl;
+			cout << "delta is now " << delta << endl;
+			cout << "psi[sigma] " << psi[sigma] << endl;//}
+			cout << "alpha_quantile.size() " << alpha_quantile.size() << endl;*/
+
+
+		if(sigma > suppMin){
+			cout << "WY: updated suppMin to " << sigma << endl;
+			suppMinCurr = sigma;
+			suppMin = sigma;
+			//cout << "  below_delta is now " << below_delta << endl;
+			cout << "  FWER " << ((double)below_delta / (double)jp) << endl;
+			cout << "  delta " << delta << endl;
+			cout << "  psi[sigma] " << psi[sigma] << endl;//}
+			//cout << "alpha_quantile.size() " << alpha_quantile.size() << endl;
+		}
+
+		//cout << "------------------------" << endl;
+
 	}
 
-	if(sigma > suppMin){
-		cout << "WY: updated suppMin to " << sigma << endl;
-		suppMinCurr = sigma;
-		suppMin = sigma;
-		cout << "below_delta is now " << below_delta << endl;
-	}
+	time_to_update_delta += get_cpu_time() - s_inst;
 
 	//p_values_time += get_cpu_time() - start;
 
@@ -1247,10 +1309,10 @@ void printMinPvalues(){
 }
 
 void printTimes(){
-	//out_file_stat << "Time for p-values = " << p_values_time << endl;
 	cout << "Time for p-values precomputation = " << precomputetime << endl;
 	cout << "p-values cache accesses = " << cache_accesses << endl;
 	cout << "p-values new precomputations = " << new_precomputation << endl;
+	cout << "Time to update delta = " << time_to_update_delta << endl;
 }
 
 void benchmarklogoperations(){
@@ -1302,6 +1364,19 @@ void benchmarklogoperations(){
 	cout << "time for no method: " << start_0 << endl;
 
 
+}
+
+double computeEmpiricalFWER(){
+	below_delta = 0;
+	/*below_delta_indexes.clear();*/
+
+	for(int aj=1; aj<jp+1; aj++){
+			quantile_indexes[aj] = min_pval[aj] <= delta;
+			below_delta+=quantile_indexes[aj];
+			/*below_delta_indexes.insert(aj);*/
+	}
+
+	return (double)below_delta / (double)jp;
 }
 
 

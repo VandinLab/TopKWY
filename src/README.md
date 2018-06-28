@@ -12,8 +12,7 @@ If you find any bugs with this package, please do not hesitate to contact us at 
 The package contains three folders:
 
 1. /src/ : contains the source code of TopKWY.
-2. /datasets/ : contains the datasets used for our experiments.
-   - /datasets/dat_name/ : contains the files for the dataset "dat_name": the transactions (dat_name.dat), the binary class labels (dat_name.labels) and the specification file (dat_name_new.spec).
+2. /datasets/ : contains the (zipped) datasets used for our experiments. When extracted, the folder /datasets/dat_name/ contains the files for the dataset "dat_name": the transactions (dat_name.dat), the binary class labels (dat_name.labels) and the specification file (dat_name_new.spec) to be given in input to TopKWY.
 3. /scripts/ : contains the scripts which replicates our experiments.
 
 
@@ -21,8 +20,8 @@ The package contains three folders:
 
 To reproduce the experiments described in "Efficient Mining of the Most Significant Patterns with Permutation Testing", you can follow these steps:
 1. TopKWY compilation: use the `make` command from inside the /src/ folder.
-2. Files organisation: copy the *topkwy* executable and *runexperiments_all.py* in the main folder. Then unzip the *datasets/datasets.zip* file. You should have the 19 subfolders for the datasets in the /datasets/ directory.
-3. Run the script for experiments with `python runexperiments_all.py`. This script launches TopKWY with jp=10^4, alpha=0.05, k = [10,100,1000,100000,1000000] for all 19 datasets, performing for each of those combination 10 runs. These parameters can be changed inside the *runexperiments_all.py* file.
+2. Files organisation: copy the *topkwy* executable and *runexperiments_all.py* in the main folder.
+3. Run the script for experiments with `python runexperiments_all.py`. This script launches TopKWY with jp=10^4, alpha=0.05, k = [10, 10e2, 10e3, 10e4, 10e5, 10e6] for all 19 datasets, performing for each of those combination 10 runs. These parameters can be changed inside the *runexperiments_all.py* file.
 4. Results: the script creates the file *all_results.csv* which contains average and variance of all the runs for every dataset and every value of k.
 
 
@@ -39,26 +38,38 @@ In these files the format is:
 k; jp; alpha; dataset_name; running_time; peak_memory; number_of_tested_patterns; run_id;
 ```
 
+### Output File
+
+The significant itemsets of the "dat_name" dataset can be found in the file *dat_name_k_alpha_jp.txt* inside its folder. The itemsets are ordered by decreasing p-value, and each line is in the format:
+```
+items : support : as : p-value : log-p-value
+```
+For example the line
+```
+8 6 : 30 : 29 : 8.13406e-07 : -6.08969
+```
+indicates that the itemset with items 8, 6 appears in 30 transactions, 29 of which belongs to the minority class. The p-value p of the distribution on the classes of the itemset is 8.13406e-07. The log (in base 10) of this value is also provided, which is useful in cases where p is reported as = 0 due to double underflow.
+
 
 ## USAGE OF TOPKWY
 
-TopKWY can manually be launched with the command `./topkwy file.spec k jp alpha [max_ram]`
+TopKWY can manually be launched with the command `./topkwy [list of parameters]`
 
 
 ### Parameters:
 
-1. (file.spec): the name of the specification file for the input (see for example the .spec files included in /datasets/ subfolders)
-2. (k): the desired number of significant itemsets.
-3. (jp): the number of permutations to use for the Westfall-Young multiple hypothesis testing method.
-4. (alpha): the upper bound to the FWER of the retrieved significant patterns.
-5. (max_ram): optional: the max size (in MB) of the ram allowed for the patterns' exploration (without considering the space needed for the Patricia Trie). (100 GB is the default value) This parameter allows the user to bound the memory usage of TopKWY when exploring particularly challenging datasets.
+1. `-s file.spec`: the name of the specification file for the input (see for example the .spec files included in /datasets/ subfolders)
+2. `-k number_of_significant_results`: [optional] the desired number of significant itemsets. Default is 10e6.
+3. `-j number_of_permutations`: [optional] the number of permutations to use for the Westfall-Young multiple hypothesis testing method. Default is 10e4.
+4. `-a alpha`: [optional] the target upper bound to the FWER of the retrieved significant patterns. Default is 0.05.
+5. `-r max_ram`: [optional] the max size (in GB) of the ram allowed for the patterns' exploration (without considering the space needed for the Patricia Trie). (100 GB is the default value). This parameter allows the user to bound the memory usage of TopKWY when exploring particularly challenging datasets.
 
 Example:
 ```
-./topkwy mushroom_new.spec 10 10000 0.05
+./topkwy -s mushroom_new.spec -k 10 -j 10000 -a 0.05
 ```
 
-Among which, the specification file for the corresponding dataset contains the following information:
+The specification file for the corresponding dataset contains the following information:
 1. file name of the dataset transactions (the path must be relative to TopKWY executable);
 2. total number of distinct items that are in the dataset;
 3. maximum length of one transaction (i.e., maximum number of items in each transaction);
@@ -79,8 +90,7 @@ mushroom.labels
 Each line in the dataset file represents one transaction, where every item is represented by its id, and it is space separated from other items.
 As an example, the transaction `1 100 1500` contains the three items "1", "100", "1500".
 
-
-One transaction should not contains duplicate items.
+One transaction does not need to contains items in sorted order, but should not contains duplicate items.
 
 
 #### DATASETS CONVERSIONS

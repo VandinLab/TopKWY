@@ -78,7 +78,6 @@ char *file_path;
 double in_use_ram;
 int memory_baseline;
 double queue_ram;
-ofstream out_file_stat_2;
 int inferior_psi_bound_happened;
 int inferior_psi_bound_happened_neglect;
 int program_state;
@@ -601,13 +600,38 @@ void findExtCloEmpty(ItemList* IL, typeQueue q , typeQueueRes q_res){
                     cout << "q_res->getKElements() returned " << q_res->getKElements() << endl;
                     cout << "q_res->getMaxIndex() returned " << q_res->getMaxIndex() << endl;*/
                     cout << " s_supp " << s_supp;
-                    cout << " new suppMin " << suppMin << endl;
+                    cout << " sigma " << suppMin;
+                    //cout << " size of oberved queue " << q_res->observed_p_values.size() << endl;
+                    while(q_res->observed_p_values.size() > K_significant_patterns_total){
+                      q_res->observed_p_values.pop();
+                    }
+                    //cout << " new size of oberved queue " << q_res->observed_p_values.size() << endl;
+                    //cout << " highest p-value " << pow(10.0 , q_res->observed_p_values.top()) << endl;
                     /*cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;
                     cout << "getPsi(suppMin) " << getPsi(suppMin) << endl;*/
 
-                    delta = getPsi(suppMin);
+                    delta = pow(10.0 , q_res->observed_p_values.top());
+                    log_delta = q_res->observed_p_values.top();
                     q_res->removeMax();
+                    cout << " delta " << delta << endl;
+
                   }
+                  // remove from the queue all non-significant patterns
+              		//while(q_res->getMax() > -0.5 && q_res->getMax() > getPsi(suppMin) && q_res->getMin() <= getPsi(suppMin)){
+              		while(q_res->getInqueue() > 0 && q_res->getMax() > getPsi(suppMin-1)){
+                    /*cout << " -------------------------- " << endl;
+                    cout << " starting to remove output results " << endl;
+                    cout << "removing not more significant itemsets with p-value " << q_res->getMax() << endl;
+                    cout << "delta " << delta << endl;
+                    cout << "log_delta " << log_delta << endl;
+                    cout << "getLogPsi(suppMin-1) " << getLogPsi(suppMin-1) << endl;
+                    cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;*/
+              			q_res->removeMax();
+                    /*cout << " -------------------------- " << endl;*/
+              			//cout << " remove max done! " << endl;
+              			//q_res->printLowestHeapLevel();
+                    //cout << "new max p-value is now " << q_res->getMax() << endl;
+              		}
 
       		}
       }
@@ -2746,29 +2770,56 @@ Transaction findPpceCI(Itemset* father, typeQueue q , typeQueueRes q_res){
             q_res->insert_observed(log_p_value);
             observed = true;
 
-                          /* Top-K strategy */
-                          while(K_significant_patterns > 0 && q_res->getKElements() >= K_significant_patterns){
-                            int new_significance_level = q_res->getMaxIndex();
-                            new_significance_level++;
-                            if(new_significance_level > suppMin){
-                              suppMin = new_significance_level;
-                              suppMinCurr = new_significance_level;
-                            }
+            /* Top-K strategy */
+            while(K_significant_patterns > 0 && q_res->getKElements() >= K_significant_patterns){
+              int new_significance_level = q_res->getMaxIndex();
+              new_significance_level++;
+              if(new_significance_level > suppMin){
+                suppMin = new_significance_level;
+                suppMinCurr = new_significance_level;
+              }
 
-                            cout << "Top-K strategy update! ";
-                            /*cout << "K_significant_patterns " << K_significant_patterns << endl;
-                            cout << "q_res->getKElements() returned " << q_res->getKElements() << endl;
-                            cout << "q_res->getMaxIndex() returned " << q_res->getMaxIndex() << endl;*/
-                            cout << " s_supp " << s_supp;
-                            cout << " new suppMin " << suppMin << endl;
-                            /*cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;
-                            cout << "getPsi(suppMin) " << getPsi(suppMin) << endl;*/
+              cout << "Top-K strategy update! ";
+              /*cout << "K_significant_patterns " << K_significant_patterns << endl;
+              cout << "q_res->getKElements() returned " << q_res->getKElements() << endl;
+              cout << "q_res->getMaxIndex() returned " << q_res->getMaxIndex() << endl;*/
+              cout << " s_supp " << s_supp;
+              cout << " sigma " << suppMin;
+              //cout << " size of oberved queue " << q_res->observed_p_values.size() << endl;
+              while(q_res->observed_p_values.size() > K_significant_patterns_total){
+                q_res->observed_p_values.pop();
+              }
+              //cout << " new size of oberved queue " << q_res->observed_p_values.size() << endl;
+              //cout << " highest p-value " << pow(10.0 , q_res->observed_p_values.top()) << endl;
+              /*cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;
+              cout << "getPsi(suppMin) " << getPsi(suppMin) << endl;*/
 
-                            delta = getPsi(suppMin);
-                            q_res->removeMax();
-                          }
+              delta = pow(10.0 , q_res->observed_p_values.top());
+              log_delta = q_res->observed_p_values.top();
+              q_res->removeMax();
+              cout << " delta " << delta << endl;
+
+            }
             //cout << "inserted!" << endl;
             //q_res->printLowestHeapLevel();
+
+            // remove from the queue all non-significant patterns
+        		//while(q_res->getMax() > -0.5 && q_res->getMax() > getPsi(suppMin) && q_res->getMin() <= getPsi(suppMin)){
+        		while(q_res->getInqueue() > 0 && q_res->getMax() > getPsi(suppMin-1)){
+              /*cout << " -------------------------- " << endl;
+              cout << " starting to remove output results " << endl;
+        			cout << "removing not more significant itemsets with p-value " << q_res->getMax() << endl;
+              cout << "delta " << delta << endl;
+              cout << "log_delta " << log_delta << endl;
+              cout << "getLogPsi(suppMin-1) " << getLogPsi(suppMin-1) << endl;
+              cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;*/
+        			//q_res->printLowestHeapLevel();
+        			q_res->removeMax();
+              /*cout << " -------------------------- " << endl;*/
+        			//cout << " remove max done! " << endl;
+        			//q_res->printLowestHeapLevel();
+              //cout << "new max p-value is now " << q_res->getMax() << endl;
+        		}
 
           }
 
@@ -4192,11 +4243,6 @@ int main(int argc, char **argv){
 
 	outfile.open (output_path_result.c_str());
   #endif
-  std::stringstream testingoutput_path_result;
-  testingoutput_path_result << fileinput << "_" << K_significant_patterns << "_" << jp << "_testing2.txt";
-	string output_path_testing2 = testingoutput_path_result.str();
-	out_file_stat_2.open(output_path_testing2.c_str());
-	out_file_stat_2 << "elapsed;nlinqueue_8;nlinqueue_16;nlinqueue_32;s_supp;inqueue;suppMin;produced;underbound;ram;" << endl;
 
 	///print Clo(empty) on output
 	if ( emptyIsNotClosed ){
@@ -4560,7 +4606,7 @@ int main(int argc, char **argv){
 			cout << "   suppMin " << suppMin  << endl;
 			cout << "   explored " << produced  << endl;
 			cout << "   tested " << tested  << endl;
-			cout << "   underbound " << inferior_psi_bound_happened_neglect  << endl;
+			//cout << "   underbound " << inferior_psi_bound_happened_neglect  << endl;
 			cout << "   pruned " << pruned_patterns << endl;
       cout << "   as processing time " << as_processing_time << endl;
 			cout << "   time for p-values precomputation " << precomputetime << endl;
@@ -4576,8 +4622,8 @@ int main(int argc, char **argv){
       else{
         cout << "non active" << endl;
       }
-			cout << "   list_length_inqueue " << list_length_inqueue  << endl;
-			cout << "   nl_nodes_length_inqueue " << nl_nodes_length_inqueue << endl;
+			//cout << "   list_length_inqueue " << list_length_inqueue  << endl;
+			//cout << "   nl_nodes_length_inqueue " << nl_nodes_length_inqueue << endl;
 			#ifdef print_list_stats
 			cout << "   nllist_avglength " << avg  << endl;
 			cout << "   nllist_avgop " << avg_op  << endl;
@@ -4950,58 +4996,45 @@ int main(int argc, char **argv){
 		program_state = -54;
 		#endif
 
-		// output all itemset in the queue which are surely significant
+    // output all itemset in the queue which are surely significant
 		//while(q_res->getMin() > -0.5 && q_res->getMin() <= getPsi(s_supp)){
-		while(q_res->getInqueue() > 0 && q_res->getLogMin() <= getLogPsi(s_supp)){
+    if(q_res->getInqueue() > 0 && q_res->getLogMin() <= getLogPsi(s_supp)){
 
-			//cout << "getLogPsi(s_supp) " << getLogPsi(s_supp) << endl;
-			//cout << "get min returned " << q_res->getLogMin() << endl;
+      /*cout << " -------------------------- " << endl;
+      cout << " starting to output results " << endl;
+      cout << " q_res->getLogMin() " << q_res->getLogMin() << endl;
+      cout << " getLogPsi(s_supp) " << getLogPsi(s_supp) << endl;
+      cout << " s_supp " << s_supp << endl;*/
 
-			//q_res->printLowestHeapLevel();
-
-			ResultPattern* toOutput_pattern = q_res->removeMin();
-
-			//cout << " remove min done! " << endl;
-			//q_res->printLowestHeapLevel();
-
-      if(SOFT_DEBUG){
-        cout << "New significant pattern found: " << endl;
-        cout << "getLogPsi(s_supp): " << getLogPsi(s_supp) << endl;
-        cout << cloempty ;
-        for (int i=1; i<=toOutput_pattern->itemset[0];i++){
-          cout << toOutput_pattern->itemset[i] << " ";
-        }
-        cout << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
+      // priority queue to sort the results
+      std::priority_queue<ResultPattern*, std::vector<ResultPattern*>, Compare_Results> res_queue_;
+      while(q_res->getInqueue() > 0 && q_res->getLogMin() <= getLogPsi(s_supp)){
+        res_queue_.push(q_res->removeMin());
       }
+      significant_itemsets+=res_queue_.size();
+      ///print the closed itemset in output file
+      ResultPattern* toOutput_pattern;
+      while(res_queue_.size() > 0){
+        toOutput_pattern = res_queue_.top();
+        res_queue_.pop();
+        /*cout << "output result with log_p_value " << toOutput_pattern->log_p_value << endl;
+        cout << "getLogPsi(s_supp) " << getLogPsi(s_supp) << endl;
+        cout << "log_delta " << log_delta << endl;*/
 
-			//cout << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << endl;
-
-			///print the closed itemset in output file
-      #ifdef write_results_to_file
-			outfile << cloempty ;	///in every closed itemset there is Clo(emptyset)
-			for (int i=1; i<=toOutput_pattern->itemset[0];i++){
-				outfile << toOutput_pattern->itemset[i] << " ";
-			}
-			outfile << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
-      #endif
-      significant_itemsets++;
-
-
-  		// update statistics
-  		inOutput[toOutput_pattern->itemset[0]+cloemptyLenght]++;
-
-      //cout << "increased stat of index "<< toOutput_pattern->itemset[0]+cloemptyLenght << endl;
-      //cout << " now it is " << inOutput[toOutput_pattern->itemset[0]+cloemptyLenght] << endl;
-
-
-      free(toOutput_pattern->itemset);
-      free(toOutput_pattern);
-
-      K_significant_patterns = K_significant_patterns - 1;
-      //cout << "K_significant_patterns decreased to " << K_significant_patterns << endl;
-
-
-		}
+        #ifdef write_results_to_file
+        outfile << cloempty ;	///in every closed itemset there is Clo(emptyset)
+        for (int i=1; i<=toOutput_pattern->itemset[0];i++){
+          outfile << toOutput_pattern->itemset[i] << " ";
+        }
+        outfile << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
+        #endif
+        inOutput[toOutput_pattern->itemset[0]+cloemptyLenght]++;
+        free(toOutput_pattern->itemset);
+        free(toOutput_pattern);
+        K_significant_patterns = K_significant_patterns - 1;
+      }
+      /*cout << " -------------------------- " << endl;*/
+    }
 
 		#ifdef trace_state
 		program_state = -55;
@@ -5021,20 +5054,35 @@ int main(int argc, char **argv){
       cout << "q_res->getKElements() returned " << q_res->getKElements() << endl;
       cout << "q_res->getMaxIndex() returned " << q_res->getMaxIndex() << endl;*/
       cout << " s_supp " << s_supp;
-      cout << " new suppMin " << suppMin << endl;
+      cout << " sigma " << suppMin;
+      //cout << " size of oberved queue " << q_res->observed_p_values.size() << endl;
+      while(q_res->observed_p_values.size() > K_significant_patterns_total){
+        q_res->observed_p_values.pop();
+      }
+      //cout << " new size of oberved queue " << q_res->observed_p_values.size() << endl;
+      //cout << " highest p-value " << pow(10.0 , q_res->observed_p_values.top()) << endl;
       /*cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;
       cout << "getPsi(suppMin) " << getPsi(suppMin) << endl;*/
 
-      delta = getPsi(suppMin);
+      delta = pow(10.0 , q_res->observed_p_values.top());
+      log_delta = q_res->observed_p_values.top();
       q_res->removeMax();
+      cout << " delta " << delta << endl;
+
     }
 
 		// remove from the queue all non-significant patterns
 		//while(q_res->getMax() > -0.5 && q_res->getMax() > getPsi(suppMin) && q_res->getMin() <= getPsi(suppMin)){
-		while(q_res->getInqueue() > 0 && q_res->getMax() > getPsi(suppMin)){
-			//cout << "removing not more significant itemsets with p-value " << q_res->getMax() << endl;
-			//q_res->printLowestHeapLevel();
+		while(q_res->getInqueue() > 0 && q_res->getMax() > getPsi(suppMin-1)){
+      /*cout << " -------------------------- " << endl;
+      cout << " starting to remove output results " << endl;
+      cout << "removing not more significant itemsets with p-value " << q_res->getMax() << endl;
+      cout << "delta " << delta << endl;
+      cout << "log_delta " << log_delta << endl;
+      cout << "getLogPsi(suppMin-1) " << getLogPsi(suppMin-1) << endl;
+      cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;*/
 			q_res->removeMax();
+      /*cout << " -------------------------- " << endl;*/
 			//cout << " remove max done! " << endl;
 			//q_res->printLowestHeapLevel();
       //cout << "new max p-value is now " << q_res->getMax() << endl;
@@ -5165,7 +5213,7 @@ int main(int argc, char **argv){
 
 	}
 
-
+  cout << endl << endl ;
   cout << "Number of patterns found during exploration: " << significant_itemsets << endl;
 
 
@@ -5177,42 +5225,43 @@ int main(int argc, char **argv){
 
 		// output all itemset in the queue which are surely significant
 		//while(q_res->getMin() > -0.5 && q_res->getMin() <= getPsi(s_supp)){
-		while(q_res->getInqueue() > 0 && q_res->getLogMin() <= getLogPsi(suppMin)){
+    if(q_res->getInqueue() > 0){
 
-			/*cout << "getLogPsi(s_supp) " << getLogPsi(s_supp) << endl;
-      cout << "getLogPsi(suppMin) " << getLogPsi(suppMin) << endl;
-			cout << "get min returned " << q_res->getLogMin() << endl;*/
-
-			//q_res->printLowestHeapLevel();
-
-			ResultPattern* toOutput_pattern = q_res->removeMin();
-
-			//cout << " remove min done! " << endl;
-			//q_res->printLowestHeapLevel();
-
-      if(SOFT_DEBUG){
-        cout << "New significant pattern found: " << endl;
-        cout << "getLogPsi(s_supp): " << getLogPsi(s_supp) << endl;
-        for (int i=1; i<=toOutput_pattern->itemset[0];i++){
-          cout << toOutput_pattern->itemset[i] << " ";
-        }
-        cout << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
+      // priority queue to sort the last results
+      std::priority_queue<ResultPattern*, std::vector<ResultPattern*>, Compare_Results> res_queue_;
+      while(q_res->getInqueue() > 0){
+        res_queue_.push(q_res->removeMin());
       }
+      ///print the closed itemset in output file
+      ResultPattern* toOutput_pattern;
+      //cout << "lowest p-value still in results queue " << res_queue_.top()->log_p_value << endl;
+      //cout << "log_delta " << log_delta << endl;
+      while(res_queue_.size() > 0 && res_queue_.top()->log_p_value <= log_delta){
+        toOutput_pattern = res_queue_.top();
+        res_queue_.pop();
+        //cout << "output result with log_p_value " << toOutput_pattern->log_p_value << endl;
+        //cout << "log_delta " << log_delta << endl;
+        significant_itemsets+=1;
 
-			//cout << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << endl;
-
-			///print the closed itemset in output file
-      #ifdef write_results_to_file
-			outfile << cloempty ;	///in every closed itemset there is Clo(emptyset)
-			for (int i=1; i<=toOutput_pattern->itemset[0];i++){
-				outfile << toOutput_pattern->itemset[i] << " ";
-			}
-			outfile << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
-      #endif
-      significant_itemsets++;
-			free(toOutput_pattern->itemset);
-			free(toOutput_pattern);
-		}
+        #ifdef write_results_to_file
+        outfile << cloempty ;	///in every closed itemset there is Clo(emptyset)
+        for (int i=1; i<=toOutput_pattern->itemset[0];i++){
+          outfile << toOutput_pattern->itemset[i] << " ";
+        }
+        outfile << ": " << toOutput_pattern->support << " : " << toOutput_pattern->a_S << " : " << toOutput_pattern->p_value << " : " << toOutput_pattern->log_p_value << endl;
+        #endif
+        inOutput[toOutput_pattern->itemset[0]+cloemptyLenght]++;
+        free(toOutput_pattern->itemset);
+        free(toOutput_pattern);
+      }
+      // free memory of non-significant patterns
+      while(res_queue_.size() > 0){
+        toOutput_pattern = res_queue_.top();
+        res_queue_.pop();
+        free(toOutput_pattern->itemset);
+        free(toOutput_pattern);
+      }
+    }
 
 		#ifdef trace_state
 		program_state = -551;
@@ -5378,26 +5427,33 @@ int main(int argc, char **argv){
 
 	#endif
 
-	cout << "\nCurrent minimum support: " << suppMinCurr <<endl;
+	//cout << "\nCurrent minimum support: " << suppMinCurr <<endl;
 	/*cout << "Global minimum support: " << suppMin <<endl;
 	cout << "\nNumber of itemset required: " ;
 	if ( emptyIsNotClosed ) cout << (k+1) <<endl;
 	else cout << k << endl;*/
+	//cout << "underbound " << inferior_psi_bound_happened_neglect  << endl;
+
+  cout << "Corrected significance threshold: " << delta << endl;
+  cout << "Corrected significance threshold (log10): " << log_delta << endl;
+  cout << "Empirical FWER: " << computeEmpiricalFWER() << endl;
+  cout << "Minimum support sigma: " << suppMin << endl;
+
+  if(K_significant_patterns_total > 0){
+    cout << "Number of significant itemsets: " << significant_itemsets << endl;
+  	cout << "S.I. Length\tNumber of S.I" << endl;
+  	for (int i=1; i<=max_trans_length; i++){
+  		if (inOutput[i]>0){
+  			cout <<i<<"\t\t\t" << inOutput[i] << endl;
+  		}
+  	}
+  }
+
+
 	cout << "Number of itemset explored: " ;
 	if ( emptyIsNotClosed ) cout << (produced+1) <<endl;
 	else cout << produced <<endl;
 	cout << "Tested patterns on the permutations " << tested  << endl;
-	//cout << "underbound " << inferior_psi_bound_happened_neglect  << endl;
-	cout << "\n------------- PRINTING STATISTICS ------------\n" << endl;
-	cout << "S.I. Length\tNumber of S.I" << endl;
-	for (int i=1; i<=max_trans_length; i++){
-		if (inOutput[i]>0){
-			cout <<i<<"\t\t\t" << inOutput[i] << endl;
-		}
-	}
-
-	cout << "Number of significant itemsets: " << significant_itemsets << endl;
-
 	cout << "Number of itemset that have been pruned: " << pruned_patterns << endl;
 
 	freeToDel();
@@ -5448,10 +5504,11 @@ int main(int argc, char **argv){
 	//cout << "qMin->maxSize " << qMin->maxSize << endl;
 	//cout << "max number of nl_a_S in memory " << maxnlinqueue << endl;
 	//cout << "max number of info in memory " << maxlivinginfos << endl;
+  cout << "total peak memory usage: " << measurePeakMemory() /*memory_peak*/ << " MByte" << endl;
 	cout << "(effective) memory for patricia trie: " << pat_tree_ram << " MByte" << endl;
 	cout << "(theoretical) memory usage for permutation matrix: " << perm_matrix_space << " MByte" << endl;
 	//cout << "memory usage for count_a_S_element: " << count_a_S_element_space << " MByte" << endl;
-	cout << "total peak memory usage: " << measurePeakMemory() /*memory_peak*/ << " MByte" << endl;
+
 	//cout << "nlasmalloc " << nlasmalloc <<endl;
 	//sleep(10);
 

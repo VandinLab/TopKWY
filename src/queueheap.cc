@@ -20,6 +20,7 @@
 
 #include "queueheap.h"
 #include "wy_.cc"
+#include <queue>
 
 
 ///default constructor: it allocate the memory for the heap and initialize the descriptor variables
@@ -1540,6 +1541,8 @@ void QueueMinMax_Restest::insert_observed(double log_observed_pval){
 	}
 	index_inefficient--;*/
 
+	observed_p_values.push(log_observed_pval);
+
 	// binary search of index of observed pattern
 	int max_index_bsearch = observed.size() - 1;
 	int min_index_bsearch = 0;
@@ -1621,6 +1624,7 @@ void QueueMinMax_Restest::removeMax(){
 		elements_stored = elements_stored - data[max_index].size();
 		elements_observed = elements_observed - observed[max_index];
 		for(int i=0; i < data[max_index].size(); i++){
+			//cout << " log-p-value of deleted pattern " << data[max_index].at(i)->log_p_value << endl;
 			free(data[max_index].at(i)->itemset);
 			free(data[max_index].at(i));
 		}

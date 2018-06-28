@@ -21,6 +21,7 @@
 //#include <vector>
 #include <vector>
 #include <deque>
+#include <queue>
 
 #define sizeIts sizeof(tipoInt)+sizeof(ItsInfo*)
 
@@ -215,6 +216,15 @@ class ResultPattern{
 
 };
 
+class Compare_Results
+{
+public:
+    bool operator() (ResultPattern* a, ResultPattern* b)
+    {
+        return a->log_p_value > b->log_p_value;
+    }
+};
+
 ///class for the min-max-based priority queue for results
 class QueueMinMaxResult{
 	public:
@@ -274,6 +284,7 @@ class QueueMinMax_Restest{
 		tipoInt getKElements();
 		void insert_observed(double log_observed_pval);
 		void printElements();
+		std::priority_queue<double> observed_p_values;
 	private:
 		tipoInt min_index;
 		double min_value;
