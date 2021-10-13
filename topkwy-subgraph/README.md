@@ -1,8 +1,7 @@
 # TopKWY: Efficient Mining of the Most Significant Patterns with Permutation Testing
 ### Authors: Leonardo Pellegrina (pellegri@dei.unipd.it), Fabio Vandin (fabio.vandin@unipd.it)
 
-This folder contains the C++ source files for the DFS version of TopKWY (TopKWY-dfs) for mining significant itemsets. Note that TopKWY-dfs is generally (much) slower than TopKWY. TopKWY-dfs is based on the frequent itemset mining algorithm LCM (see LCM_readme.txt).
-
+This folder contains the C++ source files for the DFS version of TopKWY for mining significant subgraphs (TopKWY-dfs).
 [GASTON](http://www.liacs.nl/~snijssen/gaston/iccs.html) is used as a frequent subgraph mining algorithm:
 * Nijssen, S. and Kok, J.: **A Quickstart in Frequent Structure Mining Can
   Make a Difference,** *Proceedings of the 10th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining* (KDD2004), 647-652, 2004.
@@ -19,32 +18,9 @@ We based our implentation on the work of Mahito Sugiyama (https://github.com/Bor
 To reproduce the experiments described in our paper, first compile TopKWY-dfs using the `make` command from this folder. Then, the script `run_all_datasets.py` can be used to execute all experiments.
 
 
-## USAGE OF TOPKWY-SUBGRAPH
+## USAGE OF TOPKWY-DFS
 
-TopKWY-dfs can manually be launched with the command `./topkwy-dfs [list of parameters]`
-
-
-### Parameters:
-
-The parameters to give are:
-`./topkwy-dfs output_basefilename n_perm target_fwer input_class_labels_file input_transactions_file seed [k]`
-
-`output_basefilename` is the prefix of the path for the output files
-`n_perm` the number of permutations to use for the Westfall-Young multiple hypothesis testing method. Default is 10e4.
-`target_fwer` is the target upper bound to the FWER of the retrieved significant patterns. Default is 0.05.
-`input_class_labels_file` is the input file containing the labels of the permutations (each line should contain either 0 or 1).
-`input_transactions_file` is the input file containing the transactions (see below for the input format for the transactions).
-`seed` is the random seed for generating the permuted labels.
-`k` is the [optional] desired number of significant itemsets.
-
-Example:
-```
-./topkwy mushroom 10000 0.05 mushroom.labels mushroom.trans 20202021 10
-```
-
-##Usage
-
-###Data format
+### Data format
 
 The input is composed of two files: a graph database (a list of graphs) and a list of class labels.
 In a graph database, each graph is described as follows:
@@ -70,7 +46,7 @@ e 0 1 0      // edge from node 0 to 1 with label 0
 In the class file, each line contains the class label of the corresponding graph.
 The class label should be either "0" or "1".
 
-###Compilation
+### Compilation
 
 To compile the program, go to the "src" directory and type
 
@@ -79,7 +55,7 @@ make
 ```
 The "Boost" library is needed to compile it.
 
-###Run
+### Run
 
 To run the algorithm, type
 
@@ -101,7 +77,7 @@ List of arguments:
 `-o <output_file>` : Output file of significant subgraphs
 `-k <max_results>` : Maximum number of results in output
 
-###Output format
+### Output format
 
 Resulting significant subgraphs are written to the file `<output_file>`. The output file has the same format as the input file except for two lines: supports (start from "\# s") in minor and major classes and the *p*-value (start from "\# p") of the graph. For example:
 
