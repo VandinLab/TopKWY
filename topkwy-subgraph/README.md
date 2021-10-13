@@ -15,7 +15,7 @@ We based our implentation on the work of Mahito Sugiyama (https://github.com/Bor
 
 ## REPRODUCIBILITY OF THE EXPERIMENTS DESCRIBED IN THE ARTICLE
 
-To reproduce the experiments described in our paper, first compile TopKWY-dfs using the `make` command from this folder. Then, the script `run_all_datasets.py` can be used to execute all experiments.
+To reproduce the experiments described in our paper, first compile TopKWY-dfs (see below on detailed instructions). Then, the script `run_all_datasets.py` can be used to execute all experiments.
 
 
 ## USAGE OF TOPKWY-DFS
@@ -74,8 +74,8 @@ List of arguments:
 `-r <seed>` : Seed for permutations in `-w` mode (default: 0)  
 `-i <input_file>` : Input file of graph database  
 `-c <input_class_file>` : Input file of class labels  
-`-o <output_file>` : Output file of significant subgraphs
-`-k <max_results>` : Maximum number of results in output
+`-o <output_file>` : Output file of significant subgraphs  
+`-k <max_results>` : Maximum number of results in output  
 
 ### Output format
 

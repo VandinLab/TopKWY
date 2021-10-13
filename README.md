@@ -2,7 +2,7 @@
 ### Authors: Leonardo Pellegrina (pellegri@dei.unipd.it), Fabio Vandin (fabio.vandin@unipd.it)
 
 This package contains the source files for TopKWY, the first algorithm to mine the *k* most significant patterns with bounded Family-Wise Error Rate (*FWER*) using WY permutation testing.
-TopKWY is currently implemented to mine significant itemsets and sugraphs.
+TopKWY is currently implemented to mine significant itemsets and subgraphs.
 The repository also contains all the datasets and the scripts to reproduce all experiments described in our papers "Efficient Mining of the Most Significant Patterns with Permutation Testing" (KDD 2018 https://doi.org/10.1145/3219819.3219997 and DAMI 2020 https://doi.org/10.1007/s10618-020-00687-8).
 
 If you find any bugs with this package, please do not hesitate to contact us at pellegri@dei.unipd.it and fabio.vandin@unipd.it.
