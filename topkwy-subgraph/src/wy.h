@@ -1,0 +1,11 @@
+void wy_init(double target_fwer);
+void loggamma_init();
+void psi_init();
+void wy_end();
+void precompute_pvals(int x);
+void decrease_threshold();
+void bm_process_solution(int x, bounds_info& parent_info, bounds_info& current_info);
+int doublecomp(const void* elem1, const void* elem2);
+void setK(int k_);
+double getPValue(int index);
+void compute_corrected_delta();

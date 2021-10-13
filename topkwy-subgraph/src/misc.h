@@ -1,0 +1,77 @@
+// misc.h
+// Siegfried Nijssen, snijssen@liacs.nl, jan 2004.
+#ifndef MISC_H
+#define MISC_H
+#include <vector>
+#include <stdio.h>
+#include <fstream>
+using namespace std;
+
+typedef unsigned int EdgeLabel; // combined node-edge label of the input file.
+typedef unsigned int NodeLabel;
+typedef unsigned int NodeId;
+typedef unsigned int Depth; // unsigned int is more efficient than short, but requires more memory...
+typedef unsigned int Tid;
+typedef unsigned int Frequency;
+
+extern Frequency minfreq;
+
+#define NOTID ((Tid) -1)
+#define NOEDGELABEL ((EdgeLabel) -1)
+#define MAXEDGELABEL NOEDGELABEL
+#define NONODELABEL ((NodeLabel) -1)
+#define NODEPTH ((Depth) -1)
+#define NOLEG (-1)
+#define NONODE ((NodeId) -1)
+
+// this macro can be used when push_back-ing large structures. In stead of first allocating a local
+// variable and pushing this, one first pushes and defines a reference to the space in the vector.
+// This avoids re-allocation.
+#define vector_push_back(_type,_vector,_var) (_vector).push_back ( _type () ); _type &_var = (_vector).back ();
+
+// can be used to obtain a type when inserting into a map
+#define map_insert_pair(_type) typedef typeof(_type) T##_type; pair<T##_type::iterator,bool>
+
+#define store(a,b) { if ( (b).elements.capacity () - (b).elements.size () > (b).elements.size () / 2 ) (a) = (b); else swap ( (a), (b) ); }
+
+extern bool dooutput;
+extern int phase; // 3 : all, 2 : paths and trees, 1 : paths
+extern int maxsize; // maximal size
+
+void puti ( FILE *f, int i );
+extern FILE *output;
+
+#define OUTPUT(frequency) if ( dooutput  ) { putc ( '#', output ); putc ( ' ', output ); puti ( output, frequency ); putc ( '\n', output ); graphstate.print ( output ); }
+
+inline void setmax ( short unsigned int &a, short unsigned int b ) { if ( b > a ) a = b; }
+
+class Statistics {
+  public:
+    vector<unsigned int> frequenttreenumbers;
+    vector<unsigned int> frequentpathnumbers;
+    vector<unsigned int> frequentgraphnumbers;
+    int patternsize;
+    void print ();
+};
+
+struct bounds_info{
+  int frequency;
+  int as;
+  int max_as;
+  int min_as;
+  bounds_info(){
+    frequency = -1;
+    as = -1;
+    max_as = -1;
+    min_as = -1;
+  };
+};
+
+extern Statistics statistics;
+
+extern bool RERUN, WYLIGHT;
+extern double DELTA;
+extern double wy_processing_time;
+extern ofstream OFS;
+
+#endif
